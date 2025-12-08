@@ -89,7 +89,7 @@
 			var message =  input.val().trim();
 			if (message === '') return;
 			 input.val('');
-			$('#ace-loader-send-button').show();
+			// $('#ace-loader-send-button').show();
 			$.post(
 				ace_chat_ajax.ajax_url,
 				{
@@ -99,7 +99,7 @@
 				},
 				function(res) {
 					if (res.success) {
-						$('#ace-loader-send-button').hide();
+						// $('#ace-loader-send-button').hide();
 						var user_id = res.data.user_id;
 						if (res.data.register === true) {
 							initializeChat(user_id);
@@ -107,11 +107,12 @@
 						loadMessages();
 					}
 				}
-			).fail(function () {
-				$('#ace-loader-send-button').hide();
-				 input.val(message);
-				alert('Failed to send message');
-			});
+			)
+			// .fail(function () {
+			// 	// $('#ace-loader-send-button').hide();
+			// 	 input.val(message);
+			// 	alert('Failed to send message');
+			// });
 		}
 		
 	

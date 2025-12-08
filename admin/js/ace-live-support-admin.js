@@ -76,14 +76,14 @@
 			var message = $('#ace-admin-input').val().trim();
 			if (!message || selectedUser == 0) return;
 			$('#ace-admin-input').val('');
-			$('#ace-loader').show();
+			// $('#ace-loader').show();
 			$.post(ace_chat_admin.ajax_url, {
 				action: 'ace_chat_send_admin_user',
 				user_id: selectedUser,
 				message: message,
 				nonce: ace_chat_admin.nonce
 			}, function (res) {
-				$('#ace-loader').hide();
+				// $('#ace-loader').hide();
 				if (res.success) {
 					$('#ace-admin-input').val('');
 				}
