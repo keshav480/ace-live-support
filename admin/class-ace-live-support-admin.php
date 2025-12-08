@@ -122,8 +122,8 @@ class Ace_Live_Support_Admin
 				$users_with_unread = $wpdb->get_var(
 					$wpdb->prepare(
 						"SELECT COUNT(DISTINCT u.id)
-						FROM $table_users AS u
-						LEFT JOIN $table_messages AS m ON u.id = m.user_id
+						FROM {$wpdb->prefix}ace_live_chat AS u
+						LEFT JOIN {$wpdb->prefix}ace_live_chat_messages AS m ON u.id = m.user_id
 						WHERE u.email_verified = %d
 						AND m.unread_count > 0",
 						1
