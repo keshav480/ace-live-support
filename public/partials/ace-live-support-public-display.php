@@ -65,7 +65,7 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
             <div id="ace-chat-header" style="background-color: <?php echo esc_attr($header_bg_color); ?>; color: <?php echo esc_attr($header_color); ?>;">
                 <!-- New clean SVG arrows -->
                 <?php if (! is_user_logged_in() && $session_id === false) : ?>
-                    <a href="#" class="ace-arrow-svg backToEmail">
+                    <a href="javascript:void(0);" class="ace-arrow-svg backToEmail">
                         <svg viewBox="0 0 24 24" width="20" height="20">
                             <path d="M15 6l-6 6 6 6" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" />
                         </svg>
@@ -73,7 +73,7 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
                 <?php endif; ?>
                 <?php echo esc_html($chat_widget_txt); ?>
                 <?php if (! is_user_logged_in() && $session_id === false) : ?>
-                    <a href="#" class="ace-arrow-svg forwardToOtp">
+                    <a href="javascript:void(0);" class="ace-arrow-svg forwardToOtp">
                         <svg viewBox="0 0 24 24" width="20" height="20">
                             <path d="M9 6l6 6-6 6" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" />
                         </svg>
@@ -112,7 +112,7 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
                                             <span class="spinner"></span>
                                         </div>
                                     </button>
-                                    <span class="resendOtpBtn outer"> Didn’t get the code? <a href="#" id="resendOtpBtn">Resend</a></span>
+                                    <span class="resendOtpBtn outer"> Didn’t get the code? <a href="javascript:void(0);" id="resendOtpBtn">Resend</a></span>
                                     <span id="countdown" style="margin-left: 10px; font-weight: bold;"></span>
                                 </div>
                                 <input type="hidden" name="ace_otp_nonce" value="<?php echo esc_attr($otp_nonce); ?>">
@@ -124,11 +124,7 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
                     </form>
                 </div>
             <?php endif; 
-            
-
             ?>
-
-
             <div id="ace-chat-messages" style="background-color: <?php echo esc_attr($chatbox_bg); ?>; color: <?php echo esc_attr($chatbox_txt); ?>;"></div>
             <div class="ace-chat-send_input" style="background-color: <?php echo $ace_chatbox_header_only === '0' ? esc_attr($header_bg_color) : ''; ?>; color: <?php echo $ace_chatbox_header_only ? esc_attr($header_color) : ''; ?>;">
                 <input type="text" id="ace-chat-input" placeholder="Type your message..." />
