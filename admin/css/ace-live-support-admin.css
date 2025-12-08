@@ -155,6 +155,7 @@ a.ace-user-item {
 .ace-user-name {
     font-size: 14px;
     font-weight: 600;
+    word-wrap: break-word;
 }
 
 /* Status (below name) */
@@ -165,6 +166,7 @@ a.ace-user-item {
     font-size: 11px;
     color: #fff;
     border-radius: 8px;
+    height: 8px;
 }
 
 .ace-status-online {

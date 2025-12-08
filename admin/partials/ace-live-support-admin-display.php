@@ -79,7 +79,7 @@ $current = $dt->format('Y-m-d H:i:s');
                                 <?php echo esc_html($row->name); ?>
                             </div>
                             <div class="ace-user-status <?php echo esc_attr($status_class); ?>">
-                                <?php echo esc_html($status); ?>
+                                
                             </div>
                             <?php if ($new_message):
                                 $show_bell = empty($active) ? 'block' : 'none';
@@ -90,7 +90,6 @@ $current = $dt->format('Y-m-d H:i:s');
                                 <span class="ace-unread-count"><?php echo esc_html($new_message); ?></span>
                             <?php endif; ?>
                         </div>
-
                     </a>
                     <div class="ace-user-actions-dropdown">
                         <span class="ace-menu-toggle">⋮</span>
