@@ -89,7 +89,7 @@ if (! defined('WPINC')) {
                             <?php
                             $icon = get_option('ace_support_icon');
                             ?>
-                            <input type="text" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>" style="width:60%;">
+                            <input type="text" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>" class="input_style">
                             <input type="button" class="button-primary" value="Upload Icon" id="ace_upload_button" />
                             <br><br>
                             <?php if ($icon): ?>
@@ -102,7 +102,7 @@ if (! defined('WPINC')) {
                     <tr valign="top">
                         <th scope="row">Widget Text</th>
                         <td>
-                            <input type="text" name="ace_widget_text" value="<?php echo esc_attr(get_option('ace_widget_text', 'Ace Live Support')); ?>" style="width:60%;">
+                            <input type="text" name="ace_widget_text" value="<?php echo esc_attr(get_option('ace_widget_text', 'Ace Live Support')); ?>" class="input_style">
                         </td>
                     </tr>
 
@@ -113,9 +113,7 @@ if (! defined('WPINC')) {
                             <input type="color"
                                 name="ace_chatbox_header_bg_color"
                                 value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>">
-
-                            <br><br>
-
+                            <input type="text" id="ace_chatbox_header_bg_color_text" name="ace_chatbox_header_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>"style="width:80px; margin-left:10px;">
                             <!-- Toggle Switch -->
                             <label class="ace-switch">
                                 <input type="checkbox"
@@ -134,6 +132,8 @@ if (! defined('WPINC')) {
                         <th scope="row">Chat Header/Footer Text Color</th>
                         <td>
                             <input type="color" name="ace_chatbox_header_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_color', '#000000')); ?>">
+                            <input type="text" id="ace_chatbox_header_color_text" name="ace_chatbox_header_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_color', '#000000')); ?>"class="input_color_style">
+                            
                         </td>
                     </tr>
 
@@ -142,7 +142,8 @@ if (! defined('WPINC')) {
                     <tr valign="top">
                         <th scope="row">Button Background Color</th>
                         <td>
-                            <input type="color" name="ace_btn_bg_color" value="<?php echo esc_attr(get_option('ace_btn_bg_color', '#ff0000')); ?>">
+                            <input type="color" id= "ace_btn_bg_color" name="ace_btn_bg_color" value="<?php echo esc_attr(get_option('ace_btn_bg_color', '#ff0000')); ?>">
+                            <input type="text" id="ace_btn_bg_color_text" name="ace_btn_bg_color" value="<?php echo esc_attr(get_option('ace_btn_bg_color', '#ff0000')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
@@ -151,6 +152,7 @@ if (! defined('WPINC')) {
                         <th scope="row">Button Text Color</th>
                         <td>
                             <input type="color" name="ace_btn_txt_color" value="<?php echo esc_attr(get_option('ace_btn_txt_color', '#ffffff')); ?>">
+                             <input type="text" id="ace_btn_txt_color_text" name="ace_btn_txt_color" value="<?php echo esc_attr(get_option('ace_btn_txt_color', '#ffffff')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
@@ -159,6 +161,7 @@ if (! defined('WPINC')) {
                         <th scope="row">Chatbox Background Color</th>
                         <td>
                             <input type="color" name="ace_chatbox_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_bg_color', '#ffffff')); ?>">
+                             <input type="text" id="ace_chatbox_bg_color_text" name="ace_chatbox_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_bg_color', '#ffffff')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
@@ -167,6 +170,7 @@ if (! defined('WPINC')) {
                         <th scope="row">Chatbox Text Color</th>
                         <td>
                             <input type="color" name="ace_chatbox_txt_color" value="<?php echo esc_attr(get_option('ace_chatbox_txt_color', '#000000')); ?>">
+                                <input type="text" id="ace_chatbox_txt_color_text" name="ace_chatbox_txt_color" value="<?php echo esc_attr(get_option('ace_chatbox_txt_color', '#000000')); ?>"class="input_color_style">
                         </td>
                     </tr>
         

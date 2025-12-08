@@ -322,7 +322,7 @@ display: none;
 }
 
 /* Text Inputs */
-.ace_live_wrap .form-table input[type="text"] {
+.ace_live_wrap .form-table .ace_enable_chat_credentials input[type="text"] {
     padding: 10px 12px;
     border: 1px solid #d1d1d1;
     border-radius: 6px;
@@ -568,4 +568,17 @@ span.ace_notification {
 }
 li#toplevel_page_ace-live-chat {
     position: relative;
+}
+.input_color_style {    
+    width:80px  ; 
+    margin-left:10px;
+    height: 40px;
+}
+.input_style {
+    width: 60%;
+    padding: 10px 12px !important;
+    border: 1px solid #d1d1d1 !important;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.3s;
 }

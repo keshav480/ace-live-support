@@ -208,4 +208,22 @@
 				$("#ace_smtp_test_result").html(response.data);
 			});
 		});
+
+		jQuery(document).ready(function($){
+			$('input[type="color"]').each(function () {
+				let colorPicker = $(this);
+				let name = colorPicker.attr('name'); 
+				let textField = $('#' + name + '_text'); 
+				colorPicker.on('input', function () {
+					textField.val($(this).val());
+				});
+				textField.on('input', function () {
+					let val = $(this).val();
+					let isHex = /^#([0-9A-F]{3}){1,2}$/i.test(val);
+					if (isHex) {
+						colorPicker.val(val);
+					}
+				});
+			});
+		});
 })( jQuery );
