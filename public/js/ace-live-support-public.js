@@ -129,8 +129,10 @@
 			e.stopPropagation();
 		});
 		function toggleChatBox() {
-			initializeChat(userid)
-			loadMessages()
+			if(userid){
+				initializeChat(userid)
+				loadMessages()
+			}
 			$('#ace-live-chat').toggle(); 
 			$('.chat_logo').toggle();     
 			$('.chat_close_icon').toggle()
@@ -215,7 +217,7 @@
 				if(res.success){
 					var user_id=res.data.ace_guest_id
 					initializeChat(user_id);
-					loadMessages();
+					// loadMessages();
 					$('#ace-chat-messages').show();
 					$('.ace-chat-send_input').show();
 					$('.guest_user_login_form').hide();
