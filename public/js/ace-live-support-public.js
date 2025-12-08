@@ -217,7 +217,7 @@
 				if(res.success){
 					var user_id=res.data.ace_guest_id
 					initializeChat(user_id);
-					// loadMessages();
+					loadMessages();
 					$('#ace-chat-messages').show();
 					$('.ace-chat-send_input').show();
 					$('.guest_user_login_form').hide();
