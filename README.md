@@ -103,6 +103,3 @@ Unordered list example:
 * Fast
 * Secure
 * Real-time
-
-Example code:
-

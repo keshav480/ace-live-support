@@ -103,5 +103,3 @@ Unordered list example:
 * Secure
 * Real-time
 
-Example code:
-
