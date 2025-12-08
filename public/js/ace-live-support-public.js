@@ -72,7 +72,6 @@
 		
 		// Load previous messages
 		function loadMessages(){
-
 			$.post(ace_chat_ajax.ajax_url, {action: 'ace_chat_get', nonce: ace_chat_ajax.nonce_get_chat}, function(res){
 				if(res.success){
 					$messages.html('');

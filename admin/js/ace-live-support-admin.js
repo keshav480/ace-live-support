@@ -83,7 +83,7 @@
 				message: message,
 				nonce: ace_chat_admin.nonce
 			}, function (res) {
-				// $('#ace-loader').hide();
+				// $('#ace-loader').hide(); 
 				if (res.success) {
 					$('#ace-admin-input').val('');
 				}
