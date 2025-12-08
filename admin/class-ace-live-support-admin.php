@@ -111,9 +111,33 @@ class Ace_Live_Support_Admin
 
 	public function admin_menu()
 	{
+		global $wpdb;
+		 $table_users   = $wpdb->prefix . 'ace_live_chat';
+			$table_messages = $wpdb->prefix . 'ace_live_chat_messages';
+			$cache_key_menu = 'ace_live_chat_unread_count';
+			$users_with_unread = wp_cache_get($cache_key_menu, 'ace_live_chat');
+
+			if ($users_with_unread === false) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$users_with_unread = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(DISTINCT u.id)
+						FROM $table_users AS u
+						LEFT JOIN $table_messages AS m ON u.id = m.user_id
+						WHERE u.email_verified = %d
+						AND m.unread_count > 0",
+						1
+					)
+				);
+				wp_cache_set($cache_key_menu, $users_with_unread, 'ace_live_chat', 60);
+			}
+			$label = 'Ace Live Chat';
+			if ($users_with_unread > 0) {
+				$label .= ' <span class="ace_notification">' . intval($users_with_unread) . '</span>';
+			}
 		add_menu_page(
 		'Ace Live Chat', 
-		'Ace Live Chat',
+		$label,
 		'manage_options', 
 		'ace-live-chat', 
 		

@@ -582,3 +582,6 @@ li#toplevel_page_ace-live-chat {
     font-size: 14px;
     transition: 0.3s;
 }
+li#toplevel_page_ace-live-chat ul.wp-submenu.wp-submenu-wrap li.wp-first-item.current span.ace_notification{
+    display: none;
+}
