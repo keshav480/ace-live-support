@@ -712,3 +712,16 @@ label.ace-upload-box {
 }
 
 
+.ace-tab-content { 
+    display: none; 
+    padding: 15px 0;
+}
+
+.ace-tab-content.active { 
+    display: block; 
+}
+
+.nav-tab-active {
+    background: #fff !important;
+    border-bottom-color: #fff !important;
+}

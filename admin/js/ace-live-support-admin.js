@@ -281,7 +281,18 @@ jQuery(document).ready(function ($) {
         };
         reader.readAsDataURL(file);
     }
+});
+jQuery(document).ready(function () {
+    $(".ace-tab-wrapper .nav-tab").on("click", function (e) {
+        e.preventDefault();
+        $(".nav-tab").removeClass("nav-tab-active");
+        $(this).addClass("nav-tab-active");
+        $(".ace-tab-content").removeClass("active");
+        let target = $(this).attr("href");
+        $(target).addClass("active");
+    });
 
 });
+
 
 })( jQuery );

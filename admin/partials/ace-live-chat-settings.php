@@ -7,6 +7,12 @@ if (! defined('WPINC')) {
 
 <div class="ace_live_wrap">
     <h1>Ace Live Chat Settings</h1>
+    
+    <div class="nav-tab-wrapper ace-tab-wrapper">
+          <a href="#tab-settings" class="nav-tab nav-tab-active">Settings</a>
+            <a href="#tab-smtp" class="nav-tab ">SMTP</a>
+         <a href="#tab-advance" class="nav-tab ">Advance</a>
+    </div>
 
     <form method="post" action="options.php" enctype="multipart/form-data">
         <?php
@@ -14,8 +20,8 @@ if (! defined('WPINC')) {
         do_settings_sections('ace-live-chat-settings');
         ?>
         <div class="form_outer">
+        <div id="tab-settings" class="ace-tab-content active">
             <table class="form-table">
-                
                     <tr valign="top">
                         <th scope="row">Enable Chat Support</th>
                         <td>
@@ -72,6 +78,8 @@ if (! defined('WPINC')) {
                             <a href="https://dashboard.pusher.com/" target="_blank">https://dashboard.pusher.com/</a>
                         </td>
                     </tr>
+                </table>
+            </div>
                     <!-- <tr valign="top">
                         <th scope="row">SMTP Test</th>
                             <td>
@@ -81,7 +89,10 @@ if (! defined('WPINC')) {
                             <p id="ace_smtp_test_result"></p>
                         </td>
                     </tr> -->
+                
                     <!-- SMTP Settings Section -->
+                <div id="tab-smtp" class="ace-tab-content">
+                    <table class="form-table">
                     <tr valign="top">
                         <th colspan="2"><h2>SMTP Settings</h2></th>
                     </tr>
@@ -146,9 +157,10 @@ if (! defined('WPINC')) {
                             <p id="ace_smtp_test_result"></p>
                         </td>
                     </tr>
-
-
-
+                </table>
+            </div>
+                <div id="tab-advance" class="ace-tab-content">
+                <table class="form-table">
                     <!-- Upload Support Icon -->
                     <tr valign="top">
                         <th scope="row">Support Icon</th>
@@ -261,7 +273,7 @@ if (! defined('WPINC')) {
                                 <input type="text" id="ace_chatbox_txt_color_text" name="ace_chatbox_txt_color" value="<?php echo esc_attr(get_option('ace_chatbox_txt_color', '#000000')); ?>"class="input_color_style">
                         </td>
                     </tr>
-        
+                </div>
             </table>
         </div>
         <?php submit_button(); ?>

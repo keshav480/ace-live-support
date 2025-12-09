@@ -501,42 +501,17 @@ class Ace_Live_Support_Admin
 	}
 
 	public function ace_test_smtp() {
-
-    // Capture PHPMailer SMTP error
     add_action('wp_mail_failed', function($error){
         $error_message = $error->get_error_message();
-
-        // Log the error into debug.log
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Ace SMTP Test Error: ' . $error_message);
-        }
-
-        // Return detailed error via AJAX
         wp_send_json_error("<span style='color:red;'>SMTP Error: $error_message</span>");
     });
-
-    // Send test email
     $to      = get_option('admin_email');
     $subject = "Ace Chat - SMTP Test";
     $message = "This is a test email from Ace Live Chat plugin.";
     $headers = ['Content-Type: text/html; charset=UTF-8'];
-
     if ( wp_mail($to, $subject, $message, $headers) ) {
-        
-        // Log success
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log("Ace SMTP Test: SUCCESS - Email sent to $to");
-        }
-
         wp_send_json_success("<span style='color:green;'>SMTP working! Test email sent to: $to</span>");
-
     } else {
-
-        // wp_mail failed but no PHPMailer error was triggered
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log("Ace SMTP Test: wp_mail returned false without PHPMailer error.");
-        }
-
         wp_send_json_error("<span style='color:red;'>SMTP failed! No detailed error returned.</span>");
     }
 }
