@@ -87,16 +87,20 @@ if (! defined('WPINC')) {
                         <th scope="row">Support Icon</th>
                      <td class="ace_support_icon_upload">
                         <!-- Upload Wrapper -->
+                          <?php $icon = get_option('ace_support_icon'); 
+                          $imagename= explode('/', $icon);
+                            $imagename = end($imagename); 
+                          ?>
                         <div class="ace-upload-wrapper">
                             <label class="ace-upload-box">
                                 <span class="ace-upload-btn">Upload</span>
-                                <span class="ace-upload-text">Choose file…</span>
+                                <span class="ace-upload-text"><?php echo $icon ? esc_html($imagename) : 'ace_live_chat.png'; ?></span>
 
                                 <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/*">
                             </label>
                         </div>
                         <!-- Hidden field storing image URL -->
-                        <?php $icon = get_option('ace_support_icon'); ?>
+                       
                        <input type="hidden" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>">
                         <!-- Preview Wrapper -->
                         <?php $default_icon = plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png'; ?>

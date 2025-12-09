@@ -106,8 +106,6 @@ class Ace_Live_Support_Admin
 		wp_enqueue_script('pusher-js', plugin_dir_url(__FILE__) . 'js/pusher.min.js', [], filemtime(plugin_dir_path(__FILE__) . 'js/pusher.min.js'), true);
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ace-live-support-admin.js', ['jquery', 'pusher-js'], filemtime(plugin_dir_path(__FILE__) . 'js/ace-live-support-admin.js'), true);
 		wp_localize_script($this->plugin_name, 'ace_chat_admin', ['ajax_url' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('ace_chat_nonce'), 'pusher_key' => $ace_pusher_key, 'pusher_cluster' => $ace_pusher_cluster]);
-		wp_enqueue_media();
-		wp_enqueue_script('ace-media-upload', plugin_dir_url(__FILE__) . 'js/ace-media-upload.js', ['jquery'], filemtime(plugin_dir_path(__FILE__) . 'js/ace-media-upload.js'), true);
 	}
 
 
@@ -250,7 +248,9 @@ class Ace_Live_Support_Admin
 				update_option('ace_support_icon', $url);
             }
         }
-		
+		if(isset($_POST) && $_POST['ace_support_icon']==='' && empty($_FILES['ace_support_icon_file']['name'])){
+			update_option('ace_support_icon','');
+		}
         return ;
     }
 

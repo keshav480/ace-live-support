@@ -128,30 +128,6 @@
 
 	// jquery for ace live support setting page 
 		jQuery(document).ready(function($){
-			// $('#ace_support_icon_preview').hide();
-			var mediaUploader;
-			$('#ace_upload_button').click(function(e){
-				e.preventDefault();
-				if (mediaUploader) {
-					mediaUploader.open();
-					return;
-				}
-				mediaUploader = wp.media.frames.file_frame = wp.media({
-					title: 'Choose Support Icon',
-					button: {
-						text: 'Choose Icon'
-					},
-					multiple: false
-				});
-				mediaUploader.on('select', function() {
-					var attachment = mediaUploader.state().get('selection').first().toJSON();
-					$('#ace_support_icon').val(attachment.url);
-					$('#ace_support_icon_preview').attr('src', attachment.url).show();
-					$('.ace-remove-icon').show();
-				});
-				mediaUploader.open();
-			});
-			
 			$('input[name="ace_enable_chat"]').on('change', function(){
 				if ($(this).is(':checked')) {
 					$('.ace_enable_chat_credentials').fadeIn();
@@ -247,6 +223,7 @@ jQuery(document).ready(function ($) {
     const removeBtn = $(".ace-remove-icon");
     const defaultImg = previewImg.data("default");
     const dropArea = $(".ace-upload-box");
+	const uploadText = $(".ace-upload-text");
 
     // Drag & drop events
     dropArea.on("dragover", function (e) {
@@ -276,17 +253,19 @@ jQuery(document).ready(function ($) {
     // Remove button click
     removeBtn.on("click", function () {
         previewImg.attr("src", defaultImg);
-        hiddenInput.val(""); // Clear hidden input
-        fileInput.val(""); // Clear file input
+        hiddenInput.val("");
+        fileInput.val(""); 
         $(this).hide();
+		uploadText.text("No file chosen");
     });
 
     function handleFile(file) {
         let reader = new FileReader();
         reader.onload = function (e) {
             previewImg.attr("src", e.target.result);
-            hiddenInput.val(""); // Reset hidden input; WordPress will save the uploaded file via sanitize callback
+            hiddenInput.val(""); 
             removeBtn.show();
+			uploadText.text(file.name)
         };
         reader.readAsDataURL(file);
     }
