@@ -124,6 +124,13 @@
 				});
 				subscribeToChannel(selectedUser);
 			}
+		}else{
+			let firstUser = $('.ace-user-item').first();
+			if (firstUser.length) {
+				let userId = firstUser.data('userid');
+				let userUrl = firstUser.find("a.user_detail").attr("href");
+				window.location.href = userUrl;
+			}
 		}
 
 	// jquery for ace live support setting page 
