@@ -230,6 +230,18 @@ class Ace_Live_Support_Admin
 		foreach ($creds as $cred) {
 			register_setting('ace_live_chat_settings_group', $cred, ['sanitize_callback' => 'sanitize_text_field']);
 		}
+		$smtp_fields = [
+				'ace_smtp_host'       => 'sanitize_text_field',
+				'ace_smtp_port'       => 'absint',
+				'ace_smtp_username'   => 'sanitize_text_field',
+				'ace_smtp_password'   => 'sanitize_text_field',
+				'ace_smtp_encryption' => 'sanitize_text_field',
+				'ace_smtp_from_email' => 'sanitize_email',
+				'ace_smtp_from_name'  => 'sanitize_text_field'
+			];
+		foreach ($smtp_fields as $field => $callback) {
+			register_setting('ace_live_chat_settings_group', $field, ['sanitize_callback' => $callback]);
+		}
 	}
 	public function ace_sanitize_support_icon() {
 
@@ -253,6 +265,44 @@ class Ace_Live_Support_Admin
 		}
         return ;
     }
+		/**
+		 * Apply SMTP credentials stored in plugin settings
+		 */
+		public function ace_custom_smtp_config( $phpmailer ) {
+
+			// Get saved SMTP settings
+
+			$host       = get_option('ace_smtp_host') ?? '';
+			$port       = get_option('ace_smtp_port') ?? '';
+			$username   = get_option('ace_smtp_username') ?? '';
+			$password   = get_option('ace_smtp_password') ?? '';
+			$encryption = get_option('ace_smtp_encryption') ?? '';
+			$from_email = get_option('ace_smtp_from_email') ?? '';
+			$from_name  = get_option('ace_smtp_from_name') ?? '';
+
+			// Configure PHPMailer
+			$phpmailer->isSMTP();
+			$phpmailer->Host       = $host;
+			$phpmailer->SMTPAuth   = true;
+			$phpmailer->Port       = $port;
+			$phpmailer->Username   = $username;
+			$phpmailer->Password   = $password;
+			$phpmailer->SMTPSecure = $encryption;
+
+			// Force From address
+			$phpmailer->From       = $from_email;
+			$phpmailer->FromName   = $from_name;
+		}
+		public function ace_smtp_from_email( $email ) {
+			$from = get_option('ace_smtp_from_email');
+		return !empty($from) ? $from : $email;
+		}
+
+		public function ace_smtp_from_name( $name ) {
+			$from_name = get_option('ace_smtp_from_name');
+		return !empty($from_name) ? $from_name : $name;
+		}
+
 
 	public function wp_ajax_ace_chat_get_user()
 	{
@@ -450,16 +500,46 @@ class Ace_Live_Support_Admin
 		wp_send_json_success('User Not Delete');
 	}
 
-	function ace_test_smtp() {
-		$to      = get_option('admin_email');
-		$subject = "Ace Chat - SMTP Test";
-		$message = "This is a test email from Ace Live Chat plugin.";
-		$headers = ['Content-Type: text/html; charset=UTF-8'];
-		if (wp_mail($to, $subject, $message, $headers)) {
-			wp_send_json_success("<span style='color:green;'>SMTP working! Test email sent to: $to</span>");
-		} else {
-			wp_send_json_error("<span style='color:red;'>SMTP failed! Check SMTP logs or mail server.</span>");
-		}
-	}
+	public function ace_test_smtp() {
+
+    // Capture PHPMailer SMTP error
+    add_action('wp_mail_failed', function($error){
+        $error_message = $error->get_error_message();
+
+        // Log the error into debug.log
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Ace SMTP Test Error: ' . $error_message);
+        }
+
+        // Return detailed error via AJAX
+        wp_send_json_error("<span style='color:red;'>SMTP Error: $error_message</span>");
+    });
+
+    // Send test email
+    $to      = get_option('admin_email');
+    $subject = "Ace Chat - SMTP Test";
+    $message = "This is a test email from Ace Live Chat plugin.";
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+    if ( wp_mail($to, $subject, $message, $headers) ) {
+        
+        // Log success
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log("Ace SMTP Test: SUCCESS - Email sent to $to");
+        }
+
+        wp_send_json_success("<span style='color:green;'>SMTP working! Test email sent to: $to</span>");
+
+    } else {
+
+        // wp_mail failed but no PHPMailer error was triggered
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log("Ace SMTP Test: wp_mail returned false without PHPMailer error.");
+        }
+
+        wp_send_json_error("<span style='color:red;'>SMTP failed! No detailed error returned.</span>");
+    }
+}
+
 
 }

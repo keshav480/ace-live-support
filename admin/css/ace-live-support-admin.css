@@ -324,7 +324,10 @@ display: none;
 }
 
 /* Text Inputs */
-.ace_live_wrap .form-table .ace_enable_chat_credentials input[type="text"] {
+.ace_live_wrap .form-table .ace_enable_chat_credentials input[type="text"], 
+.ace_live_wrap .form-table  tr.ace_enable_smtp_credentials input,
+ .ace_live_wrap .form-table  tr.ace_enable_smtp_credentials select
+{
     padding: 10px 12px;
     border: 1px solid #d1d1d1;
     border-radius: 6px;
@@ -332,6 +335,10 @@ display: none;
     font-size: 14px;
     transition: 0.3s;
 }
+ .ace_live_wrap .form-table  tr.ace_enable_smtp_credentials select{
+    width: 60% !important;
+    max-width: 100% !important;
+ }
 
 .ace_live_wrap .form-table input[type="text"]:focus {
     border-color: #3b7ddd;
@@ -451,7 +458,7 @@ span.ace-unread-count {
     display: flex;
     height: 27px;
     font-size: 13px;
-    top: 2px;
+      top: -7px;
 }
 .ace_admin_chat_icon{
     width:200px;
@@ -554,19 +561,20 @@ select.ace_timezone {
 }
 
 span.ace_notification {
-    border: 1px solid red;
-    border-radius: 18px;
-    padding: 3px;
-    position: absolute;
-    z-index: 99999;
-    top: 0;
-    right: 5px;
-    background: red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 19px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #d63638;
     color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+
 }
 li#toplevel_page_ace-live-chat {
     position: relative;
@@ -680,3 +688,9 @@ span.ace-remove-icon:hover {
     border: 2px dashed #007cba !important;
     background: #f0f8ff !important;
 }
+.name_status_outer {
+    display: flex;
+    gap: 12px;
+}
+
+

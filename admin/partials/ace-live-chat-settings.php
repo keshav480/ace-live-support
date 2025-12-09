@@ -72,7 +72,7 @@ if (! defined('WPINC')) {
                             <a href="https://dashboard.pusher.com/" target="_blank">https://dashboard.pusher.com/</a>
                         </td>
                     </tr>
-                    <tr valign="top">
+                    <!-- <tr valign="top">
                         <th scope="row">SMTP Test</th>
                             <td>
                                 <button type="button" class="button button-primary" id="ace_smtp_test_btn">
@@ -80,7 +80,74 @@ if (! defined('WPINC')) {
                                 </button>
                             <p id="ace_smtp_test_result"></p>
                         </td>
+                    </tr> -->
+                    <!-- SMTP Settings Section -->
+                    <tr valign="top">
+                        <th colspan="2"><h2>SMTP Settings</h2></th>
                     </tr>
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">SMTP Host</th>
+                        <td>
+                            <input type="text" name="ace_smtp_host" value="<?php echo esc_attr(get_option('ace_smtp_host', '')); ?>" style="width:60%;" placeholder="smtp.example.com">
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">SMTP Port</th>
+                        <td>
+                            <input type="number" name="ace_smtp_port" value="<?php echo esc_attr(get_option('ace_smtp_port', 587)); ?>" style="width:60%;" placeholder="587">
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">SMTP Username</th>
+                        <td>
+                            <input type="text" name="ace_smtp_username" value="<?php echo esc_attr(get_option('ace_smtp_username', '')); ?>" style="width:60%;" placeholder="username@example.com">
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">SMTP Password</th>
+                        <td>
+                            <input type="password" name="ace_smtp_password" value="<?php echo esc_attr(get_option('ace_smtp_password', '')); ?>" style="width:60%;" placeholder="password">
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">SMTP Encryption</th>
+                        <td>
+                            <select name="ace_smtp_encryption" style="width:60%;">
+                                <option value="none" <?php selected(get_option('ace_smtp_encryption'), 'none'); ?>>None</option>
+                                <option value="ssl" <?php selected(get_option('ace_smtp_encryption'), 'ssl'); ?>>SSL</option>
+                                <option value="tls" <?php selected(get_option('ace_smtp_encryption'), 'tls'); ?>>TLS</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">From Email</th>
+                        <td>
+                            <input type="email" name="ace_smtp_from_email" value="<?php echo esc_attr(get_option('ace_smtp_from_email', get_bloginfo('admin_email'))); ?>" style="width:60%;" placeholder="from@example.com">
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">From Name</th>
+                        <td>
+                            <input type="text" name="ace_smtp_from_name" value="<?php echo esc_attr(get_option('ace_smtp_from_name', get_bloginfo('name'))); ?>" style="width:60%;" placeholder="Your Site Name">
+                                </br><a href="https://myaccount.google.com/apppasswords"target="_blank">https://myaccount.google.com/apppasswords</a>
+                        </td>
+                    </tr>
+
+                    <tr valign="top" class="ace_enable_smtp_credentials">
+                        <th scope="row">Test Email</th>
+                        <td>
+                            <button type="button" class="button button-primary" id="ace_smtp_test_btn">Send Test Email</button>
+                            <p id="ace_smtp_test_result"></p>
+                        </td>
+                    </tr>
+
+
 
                     <!-- Upload Support Icon -->
                     <tr valign="top">

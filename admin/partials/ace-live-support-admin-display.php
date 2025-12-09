@@ -73,12 +73,10 @@ $current = $dt->format('Y-m-d H:i:s');
                 <div class="ace-user-item-outer ace-user-item<?php echo esc_attr($active); ?>" data-userid="<?php echo esc_html($row->user_id); ?>" data-username="<?php echo esc_html($row->name); ?>">
                     <a href="<?php echo esc_url($user_url); ?>" class="user_detail">
                         <div class="name_status_outer">
-                            <div class="ace-user-name">
+                            <span class="ace-user-status <?php echo esc_attr($status_class); ?>"></span><div class="ace-user-name">
                                 <?php echo esc_html($row->name); ?>
                             </div>
-                            <div class="ace-user-status <?php echo esc_attr($status_class); ?>">
-                                
-                            </div>
+                            
                             <?php if ($new_message):
                                 $show_bell = empty($active) ? 'block' : 'none';
                             ?>

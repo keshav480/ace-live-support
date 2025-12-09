@@ -454,10 +454,7 @@ class Ace_Live_Support_Public
 		}
 
 		// Handle OTP verification
-		if (
-			!empty($_POST['ace_otp_nonce']) &&
-			wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ace_otp_nonce'])), 'ace_otp_nonce')
-		) {
+		if (!empty($_POST['ace_otp_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ace_otp_nonce'])), 'ace_otp_nonce')) {
 
 			$guest_email = sanitize_email(wp_unslash($_POST['ace_guest_email'] ?? ''));
 			$entered_otp = sanitize_text_field(wp_unslash($_POST['ace_otp_input'] ?? ''));
