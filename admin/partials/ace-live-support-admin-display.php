@@ -22,7 +22,19 @@ $current = $dt->format('Y-m-d H:i:s');
 
     <!-- USERS LIST -->
     <div id="ace-user-list">
-        <h2>Users</h2>
+        <div class="header-with-checkbox">
+            <h2>Users</h2>
+            <span class="checkbox_update_option_outer">
+                <a href=""class="update_bulk">update</a>
+                <input type="checkbox"class="update_bulk_checkbox" id="ace-bulk-select-all-users"/>
+            </span>
+             <span class="ace-bulk-menu-toggle">⋮</span>
+                <ul class="ace-bulk-actions-menu">
+                    <li class="ace-bulk-clear-chat"  data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_clear_chat')); ?>">Clear Chat</li>
+                    <li class="ace-bulk-delete-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_delete_user')); ?>">Delete User</li>
+                     <li class="ace-bulk-read-all-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_read_all_user')); ?>">Mark as Read</li>
+                </ul>
+        </div>
 
         <?php
         if ($users) {
@@ -72,7 +84,9 @@ $current = $dt->format('Y-m-d H:i:s');
         ?>
                 <div class="ace-user-item-outer ace-user-item<?php echo esc_attr($active); ?>" data-userid="<?php echo esc_html($row->user_id); ?>" data-username="<?php echo esc_html($row->name); ?>">
                     <a href="<?php echo esc_url($user_url); ?>" class="user_detail">
+                       
                         <div class="name_status_outer">
+                             <input type="checkbox" class="ace-bulk-user-checkbox" data-userid="<?php echo esc_attr($row->user_id); ?>" />
                             <span class="ace-user-status <?php echo esc_attr($status_class); ?>"></span><div class="ace-user-name">
                                 <?php echo esc_html($row->name); ?>
                             </div>
@@ -121,8 +135,8 @@ $current = $dt->format('Y-m-d H:i:s');
             if (!$user_selected):  ?>
                 <div class="ace-no-chat-selected">
                     <i class="fa fa-comments"></i>
-                    <h3>Select a User to Start Chat</h3>
-                    <p>Choose a user from the left panel to view or reply to messages.</p>
+                    <h3>No User Found</h3>
+                     <p>No chats are available at the moment.</p>
                 </div>
             <?php else: ?>
                 <div class="ace-admin-chat-message"></div>

@@ -7,11 +7,18 @@
 .ace-msg-admin .ace-msg-time {
     text-align: right;
 }
-   .ace-user-item:hover { background:#0073aa; color:#fff; }
-            .ace-msg-user, .ace-msg-admin { padding:8px 12px; margin:6px 0; border-radius:15px; max-width:70%; word-wrap:break-word; }
-            .ace-msg-user { background:#e2f0ff; align-self:flex-start; }
-            .ace-msg-admin { background:#0073aa; color:#fff; align-self:flex-end; }
-            #ace-admin-chat { display:flex; flex-direction:column; }
+.ace-user-item:hover { background:#0073aa; color:#fff; }
+.ace-msg-user, .ace-msg-admin { padding:8px 12px; margin:6px 0; border-radius:15px; max-width:70%; word-wrap:break-word; }
+.ace-msg-user { background:#e2f0ff; align-self:flex-start; }
+.ace-msg-admin { background:#0073aa; color:#fff; align-self:flex-end; }
+#ace-admin-chat { display:flex; flex-direction:column; }
+.ace-no-chat-selected {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
 .active-dot {
     display:inline-block;
     width:10px;
@@ -702,11 +709,11 @@ label.ace-upload-box {
     border-left: 1px solid #dcdcdc;
     font-weight: 600;
 }
-.dragover-border {
+.ace-upload-wrapper .dragover-border {
     border: 2px dashed #007cba !important;
     background: #f0f8ff !important;
 }
-.name_status_outer {
+#ace-user-list .name_status_outer {
     display: flex;
     gap: 12px;
 }
@@ -721,7 +728,69 @@ label.ace-upload-box {
     display: block; 
 }
 
-.nav-tab-active {
+.ace-tab-wrapper .nav-tab-active {
     background: #fff !important;
     border-bottom-color: #fff !important;
+}
+#ace-user-list .header-with-checkbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#ace-user-list .ace-bulk-actions-menu{
+    display: none;
+}
+#ace-user-list  span.ace-bulk-menu-toggle {
+    font-size: 27px;
+}
+#ace-user-list span.ace-bulk-menu-toggle:hover {
+    cursor: pointer;
+}
+#ace-user-list .header-with-checkbox ul.ace-bulk-actions-menu {
+    position: absolute;
+    top: 36px;
+    right: 3px;
+    background: #fff;
+    border: 1px solid #ccc;
+    list-style: none;
+
+    margin: 0;
+    width: 120px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    color: #000;
+}
+#ace-user-list .header-with-checkbox {
+    position: relative;
+}
+#ace-user-list ul.ace-bulk-actions-menu li{
+    padding: 8px 12px;
+    cursor: pointer;
+    margin: 0;
+}
+#ace-user-list ul.ace-bulk-actions-menu li:hover {
+    background: #2171b1;
+    color: #fff;
+}
+#ace-user-list input.ace-bulk-user-checkbox {
+    margin: 0;
+    display: none;
+}
+a.update_bulk {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #0073aa;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+}
+.checkbox_update_option_outer {
+    display: none;
+}
+.ace-bulk-actions-menu .active {
+    background: #2171b1;
+    color: #fff;
 }
