@@ -94,9 +94,12 @@ class Ace_Live_Support_Admin
 		$ace_pusher_key     = get_option('ace_pusher_key', '');
 		$ace_pusher_secret  = get_option('ace_pusher_secret', '');
 		$ace_pusher_cluster = get_option('ace_pusher_cluster', 'ap2');
-
-
-		if ($hook !== 'toplevel_page_ace-live-chat' && $hook !== 'ace-live-chat_page_ace-live-chat-settings') {
+		$message_count=$this->ace_notify_new_message();
+		$count='';
+		if($message_count){
+			$count= '-'.$message_count;
+		}
+		if ($hook !== 'toplevel_page_ace-live-chat' && $hook !== 'ace-live-chat'.$count.'_page_ace-live-chat-settings') {
 			return;
 		}
 		// wp_enqueue_script('pusher-js', 'https://js.pusher.com/8.0/pusher.min.js', [], null, true);
@@ -109,7 +112,8 @@ class Ace_Live_Support_Admin
 
 
 
-	public function admin_menu()
+
+	public function ace_notify_new_message()
 	{
 		global $wpdb;
 		 $table_users   = $wpdb->prefix . 'ace_live_chat';
@@ -131,9 +135,16 @@ class Ace_Live_Support_Admin
 				);
 				wp_cache_set($cache_key_menu, $users_with_unread, 'ace_live_chat', 60);
 			}
+
+			return $users_with_unread;
+			
+	}
+	public function admin_menu()
+	{
+		$message_count= $this->ace_notify_new_message();
 			$label = 'Ace Live Chat';
-			if ($users_with_unread > 0) {
-				$label .= ' <span class="ace_notification">' . intval($users_with_unread) . '</span>';
+			if ($message_count > 0) {
+				$label .= ' <span class="ace_notification">' . intval($message_count) . '</span>';
 			}
 		add_menu_page(
 		'Ace Live Chat', 

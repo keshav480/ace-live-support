@@ -584,6 +584,50 @@ li#toplevel_page_ace-live-chat {
     font-size: 14px;
     transition: 0.3s;
 }
-li#toplevel_page_ace-live-chat ul.wp-submenu.wp-submenu-wrap li.wp-first-item.current span.ace_notification{
+li#toplevel_page_ace-live-chat ul.wp-submenu.wp-submenu-wrap li span.ace_notification{
     display: none;
+}
+
+.wp-submenu-head span.ace_notification {
+    display: block;
+}
+img#ace_support_icon_preview {
+    width: 169px;
+    /* display: none; */
+}
+td.ace_support_icon_upload {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+input#ace_upload_button {
+    padding: 9px;
+}
+span.ace-remove-icon {
+ font-size: 45px;
+    position: absolute;
+    z-index: 9999;
+    right: 3px;
+    color: red;
+    top: -10px;
+}
+
+.ace_support_icon_preview_wrapper {
+    position: relative;
+}
+
+#ace_upload_button::before {
+    font-size: 37px;
+    color: #fff;
+}
+.ace_live_wrap #ace_upload_button {
+    margin-left: 10px;
+    background: #3b7ddd;
+    border-color: #3b7ddd;
+    border-radius: 6px;
+    width: 78px;
+    height: 66px;
+    display: flex;
+    justify-content: center;
+        align-items: center;
 }

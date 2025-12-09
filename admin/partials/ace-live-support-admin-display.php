@@ -69,9 +69,7 @@ $current = $dt->format('Y-m-d H:i:s');
                     ],
                     admin_url('admin.php')
                 );
-
         ?>
-
                 <div class="ace-user-item-outer ace-user-item<?php echo esc_attr($active); ?>" data-userid="<?php echo esc_html($row->user_id); ?>" data-username="<?php echo esc_html($row->name); ?>">
                     <a href="<?php echo esc_url($user_url); ?>" class="user_detail">
                         <div class="name_status_outer">

@@ -85,16 +85,22 @@ if (! defined('WPINC')) {
                     <!-- Upload Support Icon -->
                     <tr valign="top">
                         <th scope="row">Support Icon</th>
-                        <td>
+                        <td class="ace_support_icon_upload">
                             <?php
                             $icon = get_option('ace_support_icon');
                             ?>
-                            <input type="text" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>" class="input_style">
-                            <input type="button" class="button-primary" value="Upload Icon" id="ace_upload_button" />
+                            <input type="text" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>" class="input_style"style="display:none;">
+                            <?php 
+                            $default_icon = plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png';
+                            ?>
+                            <div class="ace_support_icon_preview_wrapper">
+                                <img id="ace_support_icon_preview" src="<?php echo $icon ? esc_url($icon) : esc_url($default_icon); ?>" data-default="<?php echo esc_url($default_icon); ?>" alt="">
+                                <span class="ace-remove-icon" style="display: <?php echo $icon ? 'inline-block' : 'none'; ?>;">&times;</span>
+                            </div>
+                         <span id="ace_upload_button" class="dashicons dashicons-upload" style="cursor:pointer; font-size:22px;" title="Upload Icon"></span>
+                            <!-- Hidden file input -->
+                            <input type="button" class="button-primary" value="Upload Icon" name="ace_support_icon"id="ace_upload_button" style="display:none;"/>
                             <br><br>
-                            <?php if ($icon): ?>
-                                <img src="<?php echo esc_url($icon); ?>" width="80" height="80" style="border:1px solid #ccc;">
-                            <?php endif; ?>
                         </td>
                     </tr>
 

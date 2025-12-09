@@ -128,6 +128,7 @@
 
 	// jquery for ace live support setting page 
 		jQuery(document).ready(function($){
+			// $('#ace_support_icon_preview').hide();
 			var mediaUploader;
 			$('#ace_upload_button').click(function(e){
 				e.preventDefault();
@@ -145,6 +146,8 @@
 				mediaUploader.on('select', function() {
 					var attachment = mediaUploader.state().get('selection').first().toJSON();
 					$('#ace_support_icon').val(attachment.url);
+					$('#ace_support_icon_preview').attr('src', attachment.url).show();
+					$('.ace-remove-icon').show();
 				});
 				mediaUploader.open();
 			});
@@ -198,6 +201,15 @@
 
 				}
 			});
+
+			$('.ace-remove-icon').on('click', function() {
+				var $wrapper = $(this).closest('.ace_support_icon_preview_wrapper');
+				var $img = $wrapper.find('#ace_support_icon_preview');
+				var defaultSrc = $img.data('default');
+				$img.attr('src', defaultSrc);
+				$('#ace_support_icon').val('');
+				$('.ace-remove-icon').hide();
+			});
 		});
 
 		$("#ace_smtp_test_btn").click(function () {
@@ -226,4 +238,6 @@
 				});
 			});
 		});
+
+		
 })( jQuery );
