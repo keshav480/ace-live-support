@@ -8,7 +8,7 @@ if (! defined('WPINC')) {
 <div class="ace_live_wrap">
     <h1>Ace Live Chat Settings</h1>
 
-    <form method="post" action="options.php">
+    <form method="post" action="options.php" enctype="multipart/form-data">
         <?php
         settings_fields('ace_live_chat_settings_group');
         do_settings_sections('ace-live-chat-settings');
@@ -85,23 +85,31 @@ if (! defined('WPINC')) {
                     <!-- Upload Support Icon -->
                     <tr valign="top">
                         <th scope="row">Support Icon</th>
-                        <td class="ace_support_icon_upload">
-                            <?php
-                            $icon = get_option('ace_support_icon');
-                            ?>
-                            <input type="text" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>" class="input_style"style="display:none;">
-                            <?php 
-                            $default_icon = plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png';
-                            ?>
-                            <div class="ace_support_icon_preview_wrapper">
-                                <img id="ace_support_icon_preview" src="<?php echo $icon ? esc_url($icon) : esc_url($default_icon); ?>" data-default="<?php echo esc_url($default_icon); ?>" alt="">
-                                <span class="ace-remove-icon" style="display: <?php echo $icon ? 'inline-block' : 'none'; ?>;">&times;</span>
-                            </div>
-                         <span id="ace_upload_button" class="dashicons dashicons-upload" style="cursor:pointer; font-size:22px;" title="Upload Icon"></span>
-                            <!-- Hidden file input -->
-                            <input type="button" class="button-primary" value="Upload Icon" name="ace_support_icon"id="ace_upload_button" style="display:none;"/>
-                            <br><br>
-                        </td>
+                     <td class="ace_support_icon_upload">
+                        <!-- Upload Wrapper -->
+                        <div class="ace-upload-wrapper">
+                            <label class="ace-upload-box">
+                                <span class="ace-upload-btn">Upload</span>
+                                <span class="ace-upload-text">Choose file…</span>
+
+                                <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/*">
+                            </label>
+                        </div>
+                        <!-- Hidden field storing image URL -->
+                        <?php $icon = get_option('ace_support_icon'); ?>
+                       <input type="hidden" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>">
+                        <!-- Preview Wrapper -->
+                        <?php $default_icon = plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png'; ?>
+
+                        <div class="ace_support_icon_preview_wrapper">
+                            <img id="ace_support_icon_preview"
+                                src="<?php echo $icon ? esc_url($icon) : esc_url($default_icon); ?>"
+                                data-default="<?php echo esc_url($default_icon); ?>" alt="Icon Preview">
+                            <span class="ace-remove-icon"
+                                style="display: <?php echo $icon ? 'inline-block' : 'none'; ?>;">&times;</span>
+                        </div>
+                        <br><br>
+                    </td>
                     </tr>
 
                     <!-- Chat Widget Text -->

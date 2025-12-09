@@ -239,5 +239,58 @@
 			});
 		});
 
-		
+jQuery(document).ready(function ($) {
+
+    const fileInput = $("#ace_upload_input");
+    const previewImg = $("#ace_support_icon_preview");
+    const hiddenInput = $("#ace_support_icon"); // Hidden input for saving URL
+    const removeBtn = $(".ace-remove-icon");
+    const defaultImg = previewImg.data("default");
+    const dropArea = $(".ace-upload-box");
+
+    // Drag & drop events
+    dropArea.on("dragover", function (e) {
+        e.preventDefault();
+        dropArea.addClass("dragover-border");
+    });
+    dropArea.on("dragleave", function (e) {
+        dropArea.removeClass("dragover-border");
+    });
+    dropArea.on("drop", function (e) {
+        e.preventDefault();
+        dropArea.removeClass("dragover-border");
+        let files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput[0].files = files;  
+            handleFile(files[0]);
+        }
+    });
+
+    // File input change
+    fileInput.on("change", function () {
+        if (this.files.length > 0) {
+            handleFile(this.files[0]);
+        }
+    });
+
+    // Remove button click
+    removeBtn.on("click", function () {
+        previewImg.attr("src", defaultImg);
+        hiddenInput.val(""); // Clear hidden input
+        fileInput.val(""); // Clear file input
+        $(this).hide();
+    });
+
+    function handleFile(file) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            previewImg.attr("src", e.target.result);
+            hiddenInput.val(""); // Reset hidden input; WordPress will save the uploaded file via sanitize callback
+            removeBtn.show();
+        };
+        reader.readAsDataURL(file);
+    }
+
+});
+
 })( jQuery );

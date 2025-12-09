@@ -168,6 +168,7 @@ class Ace_Live_Support
 		$this->loader->add_action('wp_ajax_ace_clear_chat', $plugin_admin,  'ace_clear_chat');
 		$this->loader->add_action('wp_ajax_ace_delete_user',$plugin_admin, 'ace_delete_user');
 		$this->loader->add_action('wp_ajax_ace_test_smtp', $plugin_admin,'ace_test_smtp');
+		$this->loader->add_action('admin_init', $plugin_admin,'ace_sanitize_support_icon');
 	}
 
 	/**

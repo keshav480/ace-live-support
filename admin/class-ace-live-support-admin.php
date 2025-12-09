@@ -207,7 +207,8 @@ class Ace_Live_Support_Admin
 	public function ace_register_chat_settings()
 	{
 		register_setting('ace_live_chat_settings_group', 'ace_enable_chat', ['sanitize_callback' => 'absint']);
-		register_setting('ace_live_chat_settings_group', 'ace_support_icon', ['sanitize_callback' => 'esc_url_raw']);
+		// register_setting('ace_live_chat_settings_group', 'ace_support_icon', ['sanitize_callback' => [$this, 'ace_sanitize_support_icon']]);
+		
 		register_setting('ace_live_chat_settings_group', 'ace_widget_text', ['sanitize_callback' => 'sanitize_text_field']);
 		$color_fields = [
 			'ace_btn_bg_color',
@@ -232,7 +233,26 @@ class Ace_Live_Support_Admin
 			register_setting('ace_live_chat_settings_group', $cred, ['sanitize_callback' => 'sanitize_text_field']);
 		}
 	}
+	public function ace_sanitize_support_icon() {
 
+        if (!isset($_POST['option_page']) || $_POST['option_page'] !== 'ace_live_chat_settings_group') {
+            return ;
+        }
+
+        if (!empty($_FILES['ace_support_icon_file']['name'])) {
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+            $attachment_id = media_handle_upload('ace_support_icon_file', 0);
+            if (!is_wp_error($attachment_id)) {
+                $url = wp_get_attachment_url($attachment_id);
+				update_option('ace_support_icon', $url);
+            }
+        }
+		
+        return ;
+    }
 
 	public function wp_ajax_ace_chat_get_user()
 	{
