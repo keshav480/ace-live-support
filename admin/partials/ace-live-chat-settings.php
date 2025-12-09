@@ -160,10 +160,13 @@ if (! defined('WPINC')) {
                           ?>
                         <div class="ace-upload-wrapper">
                             <label class="ace-upload-box">
-                                <span class="ace-upload-btn">Upload</span>
-                                <span class="ace-upload-text"><?php echo $icon ? esc_html($imagename) : 'ace_live_chat.png'; ?></span>
-
-                                <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/*">
+                               <div class=" ace-upload-box-content">
+                                <h2>Drop files to upload</h2>
+                                <p>or</p>
+                                </div>
+                                <span class="ace-upload-btn">Select Files</span>
+                                <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/png, image/jpeg, image/webp">
+                                <p>Maximum upload file size: 512 MB.</p>
                             </label>
                         </div>
                         <!-- Hidden field storing image URL -->

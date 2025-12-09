@@ -219,12 +219,12 @@ jQuery(document).ready(function ($) {
 
     const fileInput = $("#ace_upload_input");
     const previewImg = $("#ace_support_icon_preview");
-    const hiddenInput = $("#ace_support_icon"); // Hidden input for saving URL
+    const hiddenInput = $("#ace_support_icon"); 
     const removeBtn = $(".ace-remove-icon");
     const defaultImg = previewImg.data("default");
     const dropArea = $(".ace-upload-box");
 	const uploadText = $(".ace-upload-text");
-
+	const maxSize = 512 * 1024 * 1024;
     // Drag & drop events
     dropArea.on("dragover", function (e) {
         e.preventDefault();
@@ -238,6 +238,12 @@ jQuery(document).ready(function ($) {
         dropArea.removeClass("dragover-border");
         let files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
+			if (files[0].size > maxSize) {
+                alert("File too large! Max size allowed is 512 MB.");
+                fileInput.val("");
+                uploadText.text("No file chosen");
+                return;	
+            }
             fileInput[0].files = files;  
             handleFile(files[0]);
         }
@@ -246,6 +252,12 @@ jQuery(document).ready(function ($) {
     // File input change
     fileInput.on("change", function () {
         if (this.files.length > 0) {
+			if (this.files[0].size > maxSize) {
+                alert("File too large! Max size allowed is 512 MB.");
+                fileInput.val("");
+                uploadText.text("No file chosen");
+                return;	
+            }
             handleFile(this.files[0]);
         }
     });
