@@ -606,7 +606,8 @@ public function ace_test_smtp() {
         $error_message = $error->get_error_message();
         wp_send_json_error("<span style='color:red;'>SMTP Error: $error_message</span>");
     });
-    $to      = get_option('admin_email');
+	$get_smtp_from_email = get_option('ace_smtp_from_email', get_option('admin_email'));
+    $to      = $get_smtp_from_email;
     $subject = "Ace Chat - SMTP Test";
     $message = "This is a test email from Ace Live Chat plugin.";
     $headers = ['Content-Type: text/html; charset=UTF-8'];

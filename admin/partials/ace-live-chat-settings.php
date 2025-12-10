@@ -51,21 +51,21 @@ if (! defined('WPINC')) {
                     <tr class="ace_enable_chat_credentials" style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
                         <th scope="row">Pusher App ID</th>
                         <td>
-                            <input type="text" name="ace_pusher_app_id" value="<?php echo esc_attr(get_option('ace_pusher_app_id', '')); ?>" style="width:60%;">
+                            <input type="text" name="ace_pusher_app_id" value="<?php echo esc_attr(get_option('ace_pusher_app_id', '')); ?>" style="width:60%;" required>
                         </td>
                     </tr>
 
                     <tr class="ace_enable_chat_credentials" style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
                         <th scope="row">Pusher Key</th>
                         <td>
-                            <input type="text" name="ace_pusher_key" value="<?php echo esc_attr(get_option('ace_pusher_key', '')); ?>" style="width:60%;">
+                            <input type="text" name="ace_pusher_key" value="<?php echo esc_attr(get_option('ace_pusher_key', '')); ?>" style="width:60%;" required>
                         </td>
                     </tr>
 
                     <tr class="ace_enable_chat_credentials" style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
                         <th scope="row">Pusher Secret</th>
                         <td>
-                            <input type="text" name="ace_pusher_secret" value="<?php echo esc_attr(get_option('ace_pusher_secret', '')); ?>" style="width:60%;">
+                            <input type="text" name="ace_pusher_secret" value="<?php echo esc_attr(get_option('ace_pusher_secret', '')); ?>" style="width:60%;" required>
                             <p class="description">Keep this private. Do not share publicly.</p>
                         </td>
                     </tr>
@@ -73,7 +73,7 @@ if (! defined('WPINC')) {
                     <tr class="ace_enable_chat_credentials" style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
                         <th scope="row">Pusher Cluster</th>
                         <td>
-                            <input type="text" name="ace_pusher_cluster" value="<?php echo esc_attr(get_option('ace_pusher_cluster', '')); ?>" style="width:60%;"><br>
+                            <input type="text" name="ace_pusher_cluster" value="<?php echo esc_attr(get_option('ace_pusher_cluster', '')); ?>" style="width:60%;" required><br>
                             <a href="https://dashboard.pusher.com/" target="_blank">https://dashboard.pusher.com/</a>
                         </td>
                     </tr>
