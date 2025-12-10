@@ -3,8 +3,6 @@ if (! defined('WPINC')) {
     die;
 }
 ?>
-
-
 <div class="ace_live_wrap">
     <h1>Ace Live Chat Settings</h1>
     
@@ -16,6 +14,7 @@ if (! defined('WPINC')) {
 
     <form method="post" action="options.php" enctype="multipart/form-data">
         <?php
+        wp_nonce_field('ace_support_icon_action', 'ace_support_icon_nonce');
         settings_fields('ace_live_chat_settings_group');
         do_settings_sections('ace-live-chat-settings');
         ?>
