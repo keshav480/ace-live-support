@@ -325,7 +325,6 @@ jQuery(document).ready(function () {
 				nonce: nonce
 			}, function (res) {
 				if (res.success) {
-					alert(messsage + " completed successfully!");
 					location.reload();
 				} else {
 					alert("An error occurred while performing the bulk action.");
