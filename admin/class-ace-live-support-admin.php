@@ -81,6 +81,10 @@ class Ace_Live_Support_Admin
 		 */
 
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ace-live-support-admin.css', [], filemtime(plugin_dir_path(__FILE__) . 'css/ace-live-support-admin.css'));
+		wp_enqueue_style($this->plugin_name.'-font', plugin_dir_url(dirname(__FILE__)) . 'fontawesome/css/fontawesome.min.css', [], filemtime(plugin_dir_path(dirname(__FILE__)) . 'fontawesome/css/fontawesome.min.css'));
+		wp_enqueue_style($this->plugin_name . '-fa-solid',plugin_dir_url(dirname(__FILE__)) . 'fontawesome/css/solid.min.css',[],filemtime(plugin_dir_path(dirname(__FILE__)) . 'fontawesome/css/solid.min.css')
+);
+
 	}
 
 	/**

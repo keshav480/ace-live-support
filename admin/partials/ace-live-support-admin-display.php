@@ -117,9 +117,7 @@ $current = $dt->format('Y-m-d H:i:s');
 
     <!-- CHAT AREA -->
     <div class="ace-chat-container">
-
         <div id="ace-chat-header">Chat</div>
-
         <div id="ace-admin-chat">
             <?php
             $user_selected = false;

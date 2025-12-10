@@ -70,7 +70,10 @@ class Ace_Live_Support_Public
 	public function enqueue_styles()
 	{
 
+
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ace-live-support-public.css', array(), filemtime(plugin_dir_path(__FILE__) . 'css/ace-live-support-public.css'), 'all');
+		wp_enqueue_style($this->plugin_name.'-font', plugin_dir_url(dirname(__FILE__)) . 'fontawesome/css/fontawesome.min.css', [], filemtime(plugin_dir_path(dirname(__FILE__)) . 'fontawesome/css/fontawesome.min.css'));
+		wp_enqueue_style($this->plugin_name . '-fa-solid',plugin_dir_url(dirname(__FILE__)) . 'fontawesome/css/solid.min.css',[],filemtime(plugin_dir_path(dirname(__FILE__)) . 'fontawesome/css/solid.min.css'));
 	}
 
 	/**

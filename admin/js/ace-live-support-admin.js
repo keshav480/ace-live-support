@@ -277,7 +277,8 @@ jQuery(document).ready(function ($) {
 
     // Remove button click
     removeBtn.on("click", function () {
-        previewImg.attr("src", defaultImg);
+        previewImg.hide();
+        $("#ace_support_icon_font").show();
         hiddenInput.val("");
         fileInput.val(""); 
         $(this).hide();
@@ -287,7 +288,8 @@ jQuery(document).ready(function ($) {
     function handleFile(file) {
         let reader = new FileReader();
         reader.onload = function (e) {
-            previewImg.attr("src", e.target.result);
+            previewImg.attr("src", e.target.result).show();
+            $("#ace_support_icon_font").hide();
             hiddenInput.val(""); 
             removeBtn.show();
 			uploadText.text(file.name)

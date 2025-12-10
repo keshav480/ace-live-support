@@ -184,12 +184,17 @@ if (! defined('WPINC')) {
                        
                        <input type="hidden" id="ace_support_icon" name="ace_support_icon" value="<?php echo esc_attr($icon); ?>">
                         <!-- Preview Wrapper -->
-                        <?php $default_icon = plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png'; ?>
 
                         <div class="ace_support_icon_preview_wrapper">
+                            <?php if(!empty($icon)):?>
                             <img id="ace_support_icon_preview"
-                                src="<?php echo $icon ? esc_url($icon) : esc_url($default_icon); ?>"
-                                data-default="<?php echo esc_url($default_icon); ?>" alt="Icon Preview">
+                                src="<?php echo $icon ? esc_url($icon) : "" ?>"
+                                data-default="" alt="Icon Preview">
+                                <i id="ace_support_icon_font"class="fa-regular fa-message" style="display:none"></i>  
+                            <?php else: ?>
+                            <img id="ace_support_icon_preview"src=""alt="Icon Preview"style="display:none;">
+                            <i id="ace_support_icon_font"class="fa-regular fa-message"></i>                                
+                            <?php endif; ?>
                             <span class="ace-remove-icon"
                                 style="display: <?php echo $icon ? 'inline-block' : 'none'; ?>;">&times;</span>
                         </div>

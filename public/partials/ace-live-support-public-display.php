@@ -56,7 +56,7 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
             <?php if ($chat_icon): ?>
                 <img src="<?php echo esc_url($chat_icon); ?>" alt="Site Logo" class="chat_logo" />
             <?php else: ?>
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(__FILE__)) . 'images/ace_live_chat.png'); ?>" class="chat_logo" style="width:100%" alt="">
+                <i id="ace_support_icon_font"class="fa-regular fa-message chat_logo"></i>  
             <?php endif; ?>
             <span class="chat_close_icon" style="display:none;">X</span>
         </div>
