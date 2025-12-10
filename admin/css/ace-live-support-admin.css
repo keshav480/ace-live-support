@@ -794,3 +794,11 @@ a.update_bulk {
     background: #2171b1;
     color: #fff;
 }
+input#ace-bulk-select-all-users {
+    margin: 0;
+}
+.ace-bulk-select-all-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

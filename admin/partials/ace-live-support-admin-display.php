@@ -24,15 +24,16 @@ $current = $dt->format('Y-m-d H:i:s');
     <div id="ace-user-list">
         <div class="header-with-checkbox">
             <h2>Users</h2>
-            <span class="checkbox_update_option_outer">
-                <a href=""class="update_bulk">update</a>
-                <input type="checkbox"class="update_bulk_checkbox" id="ace-bulk-select-all-users"/>
-            </span>
-             <span class="ace-bulk-menu-toggle">⋮</span>
+            <div class="ace-bulk-select-all-checkbox">
+                <?php if ($users) { ?>
+               <input type="checkbox"class="update_bulk_checkbox" id="ace-bulk-select-all-users"/>
+               <?php } ?>
+               <span class="ace-bulk-menu-toggle">⋮</span>
+            </div>
                 <ul class="ace-bulk-actions-menu">
-                    <li class="ace-bulk-clear-chat"  data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_clear_chat')); ?>">Clear Chat</li>
-                    <li class="ace-bulk-delete-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_delete_user')); ?>">Delete User</li>
-                     <li class="ace-bulk-read-all-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_read_all_user')); ?>">Mark as Read</li>
+                    <li class="ace-bulk-clear-chat"  data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_clear_chat')); ?>" data-action="clear">Clear Chat</li>
+                    <li class="ace-bulk-delete-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_delete_user')); ?>" data-action="delete">Delete User</li>
+                     <li class="ace-bulk-read-all-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_read_all_user')); ?>" data-action="read">Mark as Read</li>
                 </ul>
         </div>
 
@@ -84,7 +85,6 @@ $current = $dt->format('Y-m-d H:i:s');
         ?>
                 <div class="ace-user-item-outer ace-user-item<?php echo esc_attr($active); ?>" data-userid="<?php echo esc_html($row->user_id); ?>" data-username="<?php echo esc_html($row->name); ?>">
                     <a href="<?php echo esc_url($user_url); ?>" class="user_detail">
-                       
                         <div class="name_status_outer">
                              <input type="checkbox" class="ace-bulk-user-checkbox" data-userid="<?php echo esc_attr($row->user_id); ?>" />
                             <span class="ace-user-status <?php echo esc_attr($status_class); ?>"></span><div class="ace-user-name">

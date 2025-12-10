@@ -310,59 +310,44 @@ jQuery(document).ready(function () {
     });
 
 	
-	function toggleBulkClearMode(activeclass) {
-    $(".ace-bulk-actions-menu").hide();
-    $(".checkbox_update_option_outer").show();
-
-    var $checkboxes = $("#ace-user-list .ace-bulk-user-checkbox");
-    if ($checkboxes.length === 0) {
-        alert('No users available for bulk action.');
-        return;
-    }
-
-    // Remove other mode classes automatically
-    var allModes = ['ace-bulk-clear-mode', 'ace-bulk-delete-mode', 'ace-bulk-read-all-mode'];
-    allModes.forEach(function(mode) {
-        if (mode !== activeclass) {
-            $checkboxes.removeClass(mode);
-        }
-    });
-
-    // Check if first time for this mode
-    var isFirstTime = !$checkboxes.hasClass(activeclass);
-
-    // Toggle the class for the active mode
-    $checkboxes.toggleClass(activeclass);
-
-    if ($checkboxes.hasClass(activeclass)) {
-        $("." + activeclass).show();
-        if (isFirstTime) {
-            $checkboxes.prop('checked', true);
-            $("#ace-bulk-select-all-users").prop('checked', true);
-        }
-    } else {
-        $checkboxes.hide();
-		$(".checkbox_update_option_outer").hide();
-    }
-}
+	function toggleBulkClearMode(activeitem, nonce, messsage){ 
+		$(".ace-bulk-actions-menu").hide();
+		$(".checkbox_update_option_outer").show();
+		var allUserIds = [];
+		$(".ace-bulk-user-checkbox:checked").each(function() {
+			allUserIds.push($(this).data("userid"));
+		});
+		if(activeitem){
+			$.post(ace_chat_admin.ajax_url, {
+				action: 'ace_bulk_user_action',
+				user_ids: allUserIds,
+				bulk_action: activeitem,
+				nonce: nonce
+			}, function (res) {
+				if (res.success) {
+					alert(messsage + " completed successfully!");
+					location.reload();
+				} else {
+					alert("An error occurred while performing the bulk action.");
+				}
+			});
+		}
+	}
 
 // Click handler
 $("#ace-user-list .ace-bulk-actions-menu li").on("click", function(e) {
     e.stopPropagation();
     var $this = $(this);
-
-    // Make this tab active and remove 'active' from others
     $this.siblings().removeClass("active");
     $this.addClass("active");
-
-    // Trigger the corresponding mode
-    if ($this.hasClass("ace-bulk-clear-chat")) {
-        toggleBulkClearMode('ace-bulk-clear-mode');
-    } else if ($this.hasClass("ace-bulk-delete-user")) {
-        toggleBulkClearMode('ace-bulk-delete-mode');
-    } else if ($this.hasClass("ace-bulk-read-all-user")) {
-        toggleBulkClearMode('ace-bulk-read-all-mode');
-    }
+	var action = $this.data("action");
+	if ($(".ace-bulk-user-checkbox:checked").length > 0) {
+		if (confirm("Are you sure you want to " + $this.text() + "?")) {
+            toggleBulkClearMode(action , $this.data("nonce"), $this.text());
+        }
+	} else {
+		alert("Please select at least one user.");
+	}
 });
 
 });
@@ -372,5 +357,15 @@ $(document).on("click", function (e) {
 		$(".ace-bulk-actions-menu").hide();
 	}
 });
+
+$("#ace-bulk-select-all-users").change(function() {
+	var isChecked = $(this).is(":checked");
+	if(isChecked){
+	$("#ace-user-list .ace-bulk-user-checkbox").prop("checked", isChecked).show();
+	}else{
+	$("#ace-user-list .ace-bulk-user-checkbox").prop("checked", isChecked).hide();
+	}
+});
+
 
 })( jQuery );

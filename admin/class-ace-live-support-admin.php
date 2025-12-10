@@ -499,8 +499,88 @@ class Ace_Live_Support_Admin
 		}
 		wp_send_json_success('User Not Delete');
 	}
+	// bulk user action handler
 
-	public function ace_test_smtp() {
+function ace_bulk_user_action_handler() {
+		global $wpdb;
+
+		$user_ids    = isset($_POST['user_ids']) ? (array) $_POST['user_ids'] : [];
+		$bulk_action = isset($_POST['bulk_action']) ? sanitize_text_field($_POST['bulk_action']) : '';
+		$nonce       = isset($_POST['nonce']) ? $_POST['nonce'] : '';
+		$cache_key = 'ace_live_chat_bulk_action';
+		$row = wp_cache_get($cache_key, 'ace_live_chat');
+			$message_id = [];
+			$ace_live_chat_id= [];
+				foreach ($user_ids as $user_id) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$row = $wpdb->get_row($wpdb->prepare("SELECT u.id , m.id AS message_id FROM {$wpdb->prefix}ace_live_chat AS u LEFT JOIN {$wpdb->prefix}ace_live_chat_messages AS m ON u.id = m.user_id WHERE u.user_id = %s", $user_id));
+					if ($row->id) {
+						$ace_live_chat_id[]=$row->id;
+					}
+					if ($row->message_id) {
+						$message_id[]=$row->message_id;	
+					}
+					wp_cache_set($cache_key, $row, 'ace_live_chat', 60);
+
+			}
+		switch ($bulk_action) {
+			case 'clear':
+				if (!wp_verify_nonce($nonce, 'ace_bulk_clear_chat')) {
+					wp_send_json_error(['message' => 'Invalid clear nonce']);
+				}
+				 if (!empty($message_id)) {
+					$placeholders = implode(',', array_fill(0, count($message_id), '%d'));
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}ace_live_chat_messages WHERE id IN ($placeholders)",$message_id);
+					$wpdb->query($query);
+				}
+				wp_send_json_success([
+				'message' => 'Chat messages cleared successfully'
+				]);
+			break;
+
+			case 'delete':
+				if (!wp_verify_nonce($nonce, 'ace_bulk_delete_user')) {
+					wp_send_json_error(['message' => 'Invalid delete nonce']);
+				}
+ 				if (!empty($ace_live_chat_id)) {
+					$placeholders = implode(',', array_fill(0, count($ace_live_chat_id), '%d'));
+					$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}ace_live_chat WHERE id IN ($placeholders)",$ace_live_chat_id);
+					$wpdb->query($query);
+				}
+				if (!empty($message_id)) {
+					$placeholders = implode(',', array_fill(0, count($message_id), '%d'));
+					$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}ace_live_chat_messages WHERE id IN ($placeholders)",$message_id);
+					$wpdb->query($query);
+				}
+				wp_send_json_success([
+					'message' => 'Users deleted successfully'
+				]);
+
+			break;
+
+			case 'read':
+				if (!wp_verify_nonce($nonce, 'ace_bulk_read_all_user')) {
+					wp_send_json_error(['message' => 'Invalid read nonce']);
+				}
+				 if (!empty($message_id)) {
+					$placeholders = implode(',', array_fill(0, count($message_id), '%d'));
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$query = $wpdb->prepare("UPDATE {$wpdb->prefix}ace_live_chat_messages SET unread_count = 0 WHERE id IN ($placeholders)",$message_id);
+					$wpdb->query($query);
+					wp_send_json_success([
+						'message' => 'Message seen successfully'
+					]);
+				}
+			break;
+
+			default:
+				wp_send_json_error(['message' => 'Invalid action']);
+		}
+}
+
+
+public function ace_test_smtp() {
     add_action('wp_mail_failed', function($error){
         $error_message = $error->get_error_message();
         wp_send_json_error("<span style='color:red;'>SMTP Error: $error_message</span>");
@@ -515,6 +595,9 @@ class Ace_Live_Support_Admin
         wp_send_json_error("<span style='color:red;'>SMTP failed! No detailed error returned.</span>");
     }
 }
+
+
+
 
 
 }

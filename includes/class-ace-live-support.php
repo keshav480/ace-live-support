@@ -169,11 +169,11 @@ class Ace_Live_Support
 		$this->loader->add_action('wp_ajax_ace_delete_user',$plugin_admin, 'ace_delete_user');
 		$this->loader->add_action('wp_ajax_ace_test_smtp', $plugin_admin,'ace_test_smtp');
 		$this->loader->add_action('admin_init', $plugin_admin,'ace_sanitize_support_icon');
+		$this->loader->add_action('wp_ajax_ace_bulk_user_action', $plugin_admin, 'ace_bulk_user_action_handler');
 		if ( ! has_action( 'phpmailer_init', 'wp_mail_smtp_init' ) ) {
 			$this->loader->add_action( 'phpmailer_init', $plugin_admin, 'ace_custom_smtp_config' );
 			$this->loader->add_filter( 'wp_mail_from',      $plugin_admin, 'ace_smtp_from_email' );
 			$this->loader->add_filter( 'wp_mail_from_name', $plugin_admin, 'ace_smtp_from_name' );
-
 		}
 	}
 
