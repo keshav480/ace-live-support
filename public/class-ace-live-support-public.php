@@ -446,12 +446,19 @@ class Ace_Live_Support_Public
 			wp_cache_set($cache_key, $user, '', MINUTE_IN_SECONDS * 10);
 
 			// Send OTP email
+			$from_email = get_option('ace_smtp_from_email', get_option('admin_email'));
+			$from_name  = get_option('ace_smtp_from_name', 'Ace Live Chat');
+			$headers = [
+				'Content-Type: text/plain; charset=UTF-8',
+				'From: ' . $from_name . ' <' . $from_email . '>'
+			];
 			wp_mail(
 				$guest_email,
 				"Your OTP for Live Chat",
 				"Hello $guest_email,\n\nYour OTP is: $otp\nValid for 10 minutes.\nDo not share it with anyone.",
-				['Content-Type: text/plain; charset=UTF-8']
+				$headers
 			);
+
 
 			wp_send_json_success(['message' => 'OTP sent']);
 		}
