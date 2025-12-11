@@ -95,6 +95,15 @@ if (! defined('WPINC')) {
                     <tr valign="middle">
                         <th colspan="2"><h2>SMTP Settings</h2></th>
                     </tr>
+                   <tr>
+                        <th><label for="google_app_password_link">Generate App Password:</label></th>
+                        <td>
+                            <a id="google_app_password_link" href="https://myaccount.google.com/apppasswords" target="_blank">
+                                https://myaccount.google.com/apppasswords
+                            </a>
+                        </td>
+                    </tr>
+
                     <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Host</th>
                         <td>

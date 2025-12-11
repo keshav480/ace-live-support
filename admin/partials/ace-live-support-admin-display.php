@@ -111,7 +111,13 @@ $current = $dt->format('Y-m-d H:i:s');
                 </div>
         <?php
             }
-        }
+        }else{
+            ?>
+            <div class="user_not_fount_outer">
+              <i class="fa fa-user"></i>
+             <h3>No User Found</h3>
+            </div>
+            <?php  }
         ?>
     </div>
 
@@ -133,7 +139,6 @@ $current = $dt->format('Y-m-d H:i:s');
             if (!$user_selected):  ?>
                 <div class="ace-no-chat-selected">
                     <i class="fa fa-comments"></i>
-                    <h3>No User Found</h3>
                      <p>No chats are available at the moment.</p>
                 </div>
             <?php else: ?>
