@@ -21,7 +21,7 @@ if (! defined('WPINC')) {
         <div class="form_outer">
         <div id="tab-settings" class="ace-tab-content active">
             <table class="form-table">
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Enable Chat Support</th>
                         <td>
                             <label class="ace-switch">
@@ -79,7 +79,7 @@ if (! defined('WPINC')) {
                     </tr>
                 </table>
             </div>
-                    <!-- <tr valign="top">
+                    <!-- <tr valign="middle">
                         <th scope="row">SMTP Test</th>
                             <td>
                                 <button type="button" class="button button-primary" id="ace_smtp_test_btn">
@@ -92,38 +92,38 @@ if (! defined('WPINC')) {
                     <!-- SMTP Settings Section -->
                 <div id="tab-smtp" class="ace-tab-content">
                     <table class="form-table">
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th colspan="2"><h2>SMTP Settings</h2></th>
                     </tr>
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Host</th>
                         <td>
                             <input type="text" name="ace_smtp_host" value="<?php echo esc_attr(get_option('ace_smtp_host', '')); ?>" style="width:60%;" placeholder="smtp.example.com">
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Port</th>
                         <td>
                             <input type="number" name="ace_smtp_port" value="<?php echo esc_attr(get_option('ace_smtp_port', 587)); ?>" style="width:60%;" placeholder="587">
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Username</th>
                         <td>
                             <input type="text" name="ace_smtp_username" value="<?php echo esc_attr(get_option('ace_smtp_username', '')); ?>" style="width:60%;" placeholder="username@example.com">
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Password</th>
                         <td>
                             <input type="password" name="ace_smtp_password" value="<?php echo esc_attr(get_option('ace_smtp_password', '')); ?>" style="width:60%;" placeholder="password">
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">SMTP Encryption</th>
                         <td>
                             <select name="ace_smtp_encryption" style="width:60%;">
@@ -134,14 +134,14 @@ if (! defined('WPINC')) {
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">From Email</th>
                         <td>
                             <input type="email" name="ace_smtp_from_email" value="<?php echo esc_attr(get_option('ace_smtp_from_email', get_bloginfo('admin_email'))); ?>" style="width:60%;" placeholder="from@example.com">
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">From Name</th>
                         <td>
                             <input type="text" name="ace_smtp_from_name" value="<?php echo esc_attr(get_option('ace_smtp_from_name', get_bloginfo('name'))); ?>" style="width:60%;" placeholder="Your Site Name">
@@ -149,7 +149,7 @@ if (! defined('WPINC')) {
                         </td>
                     </tr>
 
-                    <tr valign="top" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials">
                         <th scope="row">Test Email</th>
                         <td>
                             <button type="button" class="button button-primary" id="ace_smtp_test_btn">Send Test Email</button>
@@ -161,7 +161,7 @@ if (! defined('WPINC')) {
                 <div id="tab-advance" class="ace-tab-content">
                 <table class="form-table">
                     <!-- Upload Support Icon -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Support Icon</th>
                      <td class="ace_support_icon_upload">
                         <!-- Upload Wrapper -->
@@ -176,8 +176,8 @@ if (! defined('WPINC')) {
                                 <p>or</p>
                                 </div>
                                 <span class="ace-upload-btn">Select Files</span>
-                                <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/png, image/jpeg, image/webp">
-                                <p>Maximum upload file size: 512 MB.</p>
+                                <input type="file" name="ace_support_icon_file" id="ace_upload_input" accept="image/jpg, image/png, image/jpeg, image/webp, image/gif ">
+                                <p>Maximum upload file size: 10 MB.</p>
                             </label>
                         </div>
                         <!-- Hidden field storing image URL -->
@@ -203,21 +203,19 @@ if (! defined('WPINC')) {
                     </tr>
 
                     <!-- Chat Widget Text -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Widget Text</th>
                         <td>
                             <input type="text" name="ace_widget_text" value="<?php echo esc_attr(get_option('ace_widget_text', 'Ace Live Support')); ?>" class="input_style">
                         </td>
                     </tr>
 
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Chat Header/Footer Background Color</th>
                         <td class="chat_box_header_footer_background">
 
-                            <input type="color"
-                                name="ace_chatbox_header_bg_color"
-                                value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>">
-                            <input type="text" id="ace_chatbox_header_bg_color_text" name="ace_chatbox_header_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>"style="width:80px; margin-left:10px;">
+                            <input type="color"name="ace_chatbox_header_bg_color"value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>">
+                            <input type="text" id="ace_chatbox_header_bg_color_text" name="ace_chatbox_header_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>"class="input_color_style">
                             <!-- Toggle Switch -->
                             <label class="ace-switch">
                                 <input type="checkbox"
@@ -232,9 +230,9 @@ if (! defined('WPINC')) {
                     </tr>
 
 
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Chat Header/Footer Text Color</th>
-                        <td>
+                        <td class="color_picker_wrapper">
                             <input type="color" name="ace_chatbox_header_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_color', '#000000')); ?>">
                             <input type="text" id="ace_chatbox_header_color_text" name="ace_chatbox_header_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_color', '#000000')); ?>"class="input_color_style">
                             
@@ -243,36 +241,36 @@ if (! defined('WPINC')) {
 
 
                     <!-- Button Background Color -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Button Background Color</th>
-                        <td>
+                        <td class="color_picker_wrapper">
                             <input type="color" id= "ace_btn_bg_color" name="ace_btn_bg_color" value="<?php echo esc_attr(get_option('ace_btn_bg_color', '#ff0000')); ?>">
                             <input type="text" id="ace_btn_bg_color_text" name="ace_btn_bg_color" value="<?php echo esc_attr(get_option('ace_btn_bg_color', '#ff0000')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
                     <!-- Button Text Color -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Button Text Color</th>
-                        <td>
+                        <td class="color_picker_wrapper">
                             <input type="color" name="ace_btn_txt_color" value="<?php echo esc_attr(get_option('ace_btn_txt_color', '#ffffff')); ?>">
                              <input type="text" id="ace_btn_txt_color_text" name="ace_btn_txt_color" value="<?php echo esc_attr(get_option('ace_btn_txt_color', '#ffffff')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
                     <!-- Chatbox Background Color -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Chatbox Background Color</th>
-                        <td>
+                        <td class="color_picker_wrapper">
                             <input type="color" name="ace_chatbox_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_bg_color', '#ffffff')); ?>">
                              <input type="text" id="ace_chatbox_bg_color_text" name="ace_chatbox_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_bg_color', '#ffffff')); ?>"class="input_color_style">
                         </td>
                     </tr>
 
                     <!-- Chatbox Text Color -->
-                    <tr valign="top">
+                    <tr valign="middle">
                         <th scope="row">Chatbox Text Color</th>
-                        <td>
+                        <td class="color_picker_wrapper">
                             <input type="color" name="ace_chatbox_txt_color" value="<?php echo esc_attr(get_option('ace_chatbox_txt_color', '#000000')); ?>">
                                 <input type="text" id="ace_chatbox_txt_color_text" name="ace_chatbox_txt_color" value="<?php echo esc_attr(get_option('ace_chatbox_txt_color', '#000000')); ?>"class="input_color_style">
                         </td>

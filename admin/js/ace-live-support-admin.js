@@ -237,7 +237,7 @@ jQuery(document).ready(function ($) {
     const defaultImg = previewImg.data("default");
     const dropArea = $(".ace-upload-box");
 	const uploadText = $(".ace-upload-text");
-	const maxSize = 512 * 1024 * 1024;
+	const maxSize = 10 * 1024 * 1024; // 10 MB
     // Drag & drop events
     dropArea.on("dragover", function (e) {
         e.preventDefault();
@@ -252,7 +252,7 @@ jQuery(document).ready(function ($) {
         let files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
 			if (files[0].size > maxSize) {
-                alert("File too large! Max size allowed is 512 MB.");
+                alert("File too large! Max size allowed is 10 MB.");
                 fileInput.val("");
                 uploadText.text("No file chosen");
                 return;	
@@ -266,7 +266,7 @@ jQuery(document).ready(function ($) {
     fileInput.on("change", function () {
         if (this.files.length > 0) {
 			if (this.files[0].size > maxSize) {
-                alert("File too large! Max size allowed is 512 MB.");
+                alert("File too large! Max size allowed is 10 MB.");
                 fileInput.val("");
                 uploadText.text("No file chosen");
                 return;	
