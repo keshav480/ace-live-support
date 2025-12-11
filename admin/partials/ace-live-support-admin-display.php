@@ -18,6 +18,8 @@ $saved_tz = get_option('ace_timezone', 'Asia/Kolkata');
 $dt = new DateTime('now', new DateTimeZone($saved_tz));
 $current = $dt->format('Y-m-d H:i:s');
 ?>
+<div class="ace-livechat-page-outer">
+<h1>Ace Live Chat</h1>
 <div class="wrap ace-chat-wrapper">
 
     <!-- USERS LIST -->
@@ -114,7 +116,7 @@ $current = $dt->format('Y-m-d H:i:s');
         }else{
             ?>
             <div class="user_not_fount_outer">
-              <i class="fa fa-user"></i>
+           <i class="fa-solid fa-users"></i>
              <h3>No User Found</h3>
             </div>
             <?php  }
@@ -152,4 +154,5 @@ $current = $dt->format('Y-m-d H:i:s');
         </div>
 
     </div>
+</div>
 </div>

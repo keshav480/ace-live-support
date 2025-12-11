@@ -79,32 +79,19 @@ if (! defined('WPINC')) {
                     </tr>
                 </table>
             </div>
-                    <!-- <tr valign="middle">
-                        <th scope="row">SMTP Test</th>
-                            <td>
-                                <button type="button" class="button button-primary" id="ace_smtp_test_btn">
-                                    Send Test Email
-                                </button>
-                            <p id="ace_smtp_test_result"></p>
-                        </td>
-                    </tr> -->
-                
-                    <!-- SMTP Settings Section -->
+                         <!-- SMTP Settings Section -->
                 <div id="tab-smtp" class="ace-tab-content">
                     <table class="form-table">
-                    <tr valign="middle">
-                        <th colspan="2"><h2>SMTP Settings</h2></th>
-                    </tr>
-                   <tr>
-                        <th><label for="google_app_password_link">Generate App Password:</label></th>
-                        <td>
-                            <a id="google_app_password_link" href="https://myaccount.google.com/apppasswords" target="_blank">
+
+                   <tr class="genrate_app_password">
+                        <th><label for="google_app_password_link">Generate App Password:</label>
+                        <a id="google_app_password_link" href="https://myaccount.google.com/apppasswords" target="_blank">
                                 https://myaccount.google.com/apppasswords
                             </a>
-                        </td>
+                    </th>
                     </tr>
 
-                    <tr valign="middle" class="ace_enable_smtp_credentials">
+                    <tr valign="middle" class="ace_enable_smtp_credentials smtphost">
                         <th scope="row">SMTP Host</th>
                         <td>
                             <input type="text" name="ace_smtp_host" value="<?php echo esc_attr(get_option('ace_smtp_host', '')); ?>" style="width:60%;" placeholder="smtp.example.com">
@@ -154,7 +141,7 @@ if (! defined('WPINC')) {
                         <th scope="row">From Name</th>
                         <td>
                             <input type="text" name="ace_smtp_from_name" value="<?php echo esc_attr(get_option('ace_smtp_from_name', get_bloginfo('name'))); ?>" style="width:60%;" placeholder="Your Site Name">
-                                </br><a href="https://myaccount.google.com/apppasswords"target="_blank">https://myaccount.google.com/apppasswords</a>
+                                </br>
                         </td>
                     </tr>
 
