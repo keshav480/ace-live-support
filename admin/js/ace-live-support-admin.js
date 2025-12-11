@@ -138,8 +138,10 @@
 			$('input[name="ace_enable_chat"]').on('change', function(){
 				if ($(this).is(':checked')) {
 					$('.ace_enable_chat_credentials').fadeIn();
+					$('.ace_enable_chat_credentials td input').prop('required', true);
 				} else {
 					$('.ace_enable_chat_credentials').fadeOut();
+					 $('.ace_enable_chat_credentials td input').prop('required', false);
 				}
 			});
 			$(document).on('click', '.ace-menu-toggle', function(e){
