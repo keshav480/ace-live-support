@@ -139,9 +139,11 @@
 				if ($(this).is(':checked')) {
 					$('.ace_enable_chat_credentials').fadeIn();
 					$('.ace_enable_chat_credentials td input').prop('required', true);
+					$('.notice.notice-warning.is-dismissible').hide()
 				} else {
 					$('.ace_enable_chat_credentials').fadeOut();
 					 $('.ace_enable_chat_credentials td input').prop('required', false);
+					 $('.notice.notice-warning.is-dismissible.onload').show()
 				}
 			});
 			$(document).on('click', '.ace-menu-toggle', function(e){

@@ -29,8 +29,19 @@ if (! defined('WPINC')) {
                                  checked(1, $enable_chat, true); ?> />
                                 <span class="ace-slider round"></span>
                             </label>
-
                         </td>
+                        
+                    </tr>
+                    <tr>
+                    <td colspan="2" class="show_message_warning"><?php if ( ! get_option('ace_enable_chat') ) : ?>
+                        <div class="notice notice-warning is-dismissible">
+                        <p><strong>Chat Support is disabled.</strong> Please enable it to access all live chat features.</p>
+                        </div>
+                        <?php endif; ?>
+                        <div class="notice notice-warning is-dismissible onload"style="display:none">
+                        <p><strong>Chat Support is disabled.</strong> Please enable it to access all live chat features.</p>
+                        </div>
+                    </td>
                     </tr>
                     <!-- Pusher App ID -->
                     <?php $enable_chat = get_option('ace_enable_chat', 0); ?>
@@ -84,7 +95,7 @@ if (! defined('WPINC')) {
                     <table class="form-table">
 
                    <tr class="genrate_app_password">
-                        <th><label for="google_app_password_link">Generate App Password:</label>
+                        <th><label for="google_app_password_link">Generate App Password:</label></br>
                         <a id="google_app_password_link" href="https://myaccount.google.com/apppasswords" target="_blank">
                                 https://myaccount.google.com/apppasswords
                             </a>
@@ -279,4 +290,5 @@ if (! defined('WPINC')) {
         </div>
         <?php submit_button(); ?>
     </form>
+    
 </div>
