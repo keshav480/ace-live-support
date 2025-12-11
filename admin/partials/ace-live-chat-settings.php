@@ -210,22 +210,25 @@ if (! defined('WPINC')) {
                         </td>
                     </tr>
 
-                    <tr valign="middle">
-                        <th scope="row">Chat Header/Footer Background Color</th>
-                        <td class="chat_box_header_footer_background">
-
+                    <tr class="ace_color_settings_section">
+                        <th>
+                            <div class="ace-switch-label-outer">
+                                <span>Enable only for header</span> <label class="ace-switch">
+                                    <input type="checkbox"
+                                        name="ace_chatbox_header_only"
+                                        value="1"
+                                        <?php checked(1, get_option('ace_chatbox_header_only', '#000000')); ?>>
+                                    <span class="ace-slider"></span>
+                                </label>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr valign="middle" class="ace_color_settings_section_wrapper">
+                        <th scope="row"> 
+                            Chat Header/Footer Background Color</th>
+                            <td class="chat_box_header_footer_background">
                             <input type="color"name="ace_chatbox_header_bg_color"value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>">
                             <input type="text" id="ace_chatbox_header_bg_color_text" name="ace_chatbox_header_bg_color" value="<?php echo esc_attr(get_option('ace_chatbox_header_bg_color', '#ffffff')); ?>"class="input_color_style">
-                            <!-- Toggle Switch -->
-                            <label class="ace-switch">
-                                <input type="checkbox"
-                                    name="ace_chatbox_header_only"
-                                    value="1"
-                                    <?php checked(1, get_option('ace_chatbox_header_only', '#000000')); ?>>
-                                <span class="ace-slider"></span>
-                            </label>
-                            <span style="margin-left:10px;">Enable only for header</span>
-
                         </td>
                     </tr>
 
