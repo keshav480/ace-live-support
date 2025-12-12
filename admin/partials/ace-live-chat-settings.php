@@ -30,8 +30,8 @@ if (! defined('WPINC')) {
                                 <span class="ace-slider round"></span>
                             </label>
                         </td>
-                        
                     </tr>
+                  
                     <tr>
                     <td colspan="2" class="show_message_warning"><?php if ( ! get_option('ace_enable_chat') ) : ?>
                         <div class="notice notice-warning is-dismissible">
@@ -44,6 +44,12 @@ if (! defined('WPINC')) {
                     </td>
                     </tr>
                     <!-- Pusher App ID -->
+                       <tr class="genrate_app_password ace_enable_chat_credentials"style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
+                        <th><label for="google_app_password_link">Generate App Password:</label></br>
+                             <a id="google_app_password_link" href="https://dashboard.pusher.com" target="_blank">
+                                https://dashboard.pusher.com/</a>
+                         </th>
+                    </tr>
                     <?php $enable_chat = get_option('ace_enable_chat', 0); ?>
                     <tr class="ace_enable_chat_credentials" style="display: <?php echo $enable_chat ? 'table-row' : 'none'; ?>;">
                     <th scope="row">Timezone</th>
@@ -85,7 +91,7 @@ if (! defined('WPINC')) {
                         <th scope="row">Pusher Cluster</th>
                         <td>
                             <input type="text" name="ace_pusher_cluster" value="<?php echo esc_attr(get_option('ace_pusher_cluster', '')); ?>" style="width:60%;" placeholder="ap2"required><br>
-                            <a href="https://dashboard.pusher.com/" target="_blank">https://dashboard.pusher.com/</a>
+                           
                         </td>
                     </tr>
                 </table>
