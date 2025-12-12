@@ -155,14 +155,17 @@ if (! defined('WPINC')) {
                                 </br>
                         </td>
                     </tr>
-
-                    <tr valign="middle" class="ace_enable_smtp_credentials">
-                        <th scope="row">Test Email</th>
-                        <td>
-                            <button type="button" class="button button-primary" id="ace_smtp_test_btn">Send Test Email</button>
-                            <p id="ace_smtp_test_result"></p>
-                        </td>
-                    </tr>
+                        <?php if ( ! empty( get_option( 'ace_smtp_from_email' ) ) ) : ?>
+                        <tr valign="middle" class="ace_enable_smtp_credentials">
+                            <th scope="row"><?php esc_html_e( 'Test Email', 'your-text-domain' ); ?></th>
+                            <td>
+                                <button type="button" class="button button-primary" id="ace_smtp_test_btn">
+                                    <?php esc_html_e( 'Send Test Email', 'your-text-domain' ); ?>
+                                </button>
+                                <p id="ace_smtp_test_result"></p>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </table>
             </div>
                 <div id="tab-advance" class="ace-tab-content">
