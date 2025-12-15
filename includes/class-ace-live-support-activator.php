@@ -1,7 +1,6 @@
 <?php
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 
 /**
  * Fired during plugin activation
