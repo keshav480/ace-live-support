@@ -11,9 +11,7 @@
  * @package    Ace_Live_Support
  * @subpackage Ace_Live_Support/public/partials
  */
-if (! defined('WPINC')) {
-    die;
-}
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 // Get chat settings
 $chat_icon                  = esc_url(get_option('ace_support_icon', '')); // fallback icon
 $chat_widget_txt            = esc_html(get_option('ace_widget_text', 'Ace Live Support'));

@@ -1,7 +1,5 @@
 <?php
-if (! defined('WPINC')) {
-    die;
-}
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 ?>
 <div class="ace_live_wrap">
     <h1>Ace Live Chat Settings</h1>
@@ -157,10 +155,10 @@ if (! defined('WPINC')) {
                     </tr>
                         <?php if ( ! empty( get_option( 'ace_smtp_from_email' ) ) ) : ?>
                         <tr valign="middle" class="ace_enable_smtp_credentials">
-                            <th scope="row"><?php esc_html_e( 'Test Email', 'your-text-domain' ); ?></th>
+                            <th scope="row"><?php esc_html_e( 'Test Email', 'ace-live-support' ); ?></th>
                             <td>
                                 <button type="button" class="button button-primary" id="ace_smtp_test_btn">
-                                    <?php esc_html_e( 'Send Test Email', 'your-text-domain' ); ?>
+                                    <?php esc_html_e( 'Send Test Email', 'ace-live-support' ); ?>
                                 </button>
                                 <p id="ace_smtp_test_result"></p>
                             </td>
