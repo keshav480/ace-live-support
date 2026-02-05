@@ -111,6 +111,10 @@ class Ace_Live_Support_Public
 		$table = esc_sql($wpdb->prefix . 'ace_live_chat');
 		$messages_table = esc_sql($wpdb->prefix . 'ace_live_chat_messages');
 
+		// Ensure variables are always defined to avoid notices.
+		$messages = [];
+		$user_id  = 0;
+
 		if (is_user_logged_in()) {
 			$email = wp_get_current_user()->user_email;
 
@@ -124,7 +128,9 @@ class Ace_Live_Support_Public
 			$messages = $row ? json_decode($row->messages, true) : [];
 			wp_cache_set($cache_key, $messages, '', 30);
 		} else {
-			session_start();
+			if (!session_id()) {
+				session_start();
+			}
 			if (!$user_id && session_id()) {
 				$user_id = isset($_SESSION['ace_guest_id']) ? sanitize_text_field($_SESSION['ace_guest_id']) : '';
 				if ($user_id) {
@@ -154,15 +160,22 @@ class Ace_Live_Support_Public
 	{
 		check_ajax_referer('ace_chat_nonce', 'nonce');
 		global $wpdb;
-		$table = esc_sql($wpdb->prefix . 'ace_live_chat');
+		$table          = esc_sql($wpdb->prefix . 'ace_live_chat');
 		$messages_table = esc_sql($wpdb->prefix . 'ace_live_chat_messages');
-		$saved_tz = get_option('ace_timezone','Asia/Kolkata');
-		$dt = new DateTime('now', new DateTimeZone($saved_tz));
+		$saved_tz       = get_option('ace_timezone','Asia/Kolkata');
+		$dt             = new DateTime('now', new DateTimeZone($saved_tz));
+
+		// Defaults to avoid undefined variable notices.
+		$messages         = [];
+		$is_first_message = false;
+		$user_id          = 0;
+
 		if (is_user_logged_in()) {
 			$current_user = wp_get_current_user();
 			$name  = $current_user->display_name;
 			$email = $current_user->user_email;
 			$type  = 'user';
+			$user_id = get_current_user_id();
 			$cache_key = 'ace_live_chat_user_' . $user_id;
 			$row = wp_cache_get( $cache_key, 'ace_live_chat' );
 
@@ -195,8 +208,8 @@ class Ace_Live_Support_Public
 					$this->insert_message($messages_table, $row->ace_table_id, $messages);
 				}
 			} else {
-				$guest_user_id = 'user_' . time() . '_' . wp_generate_uuid4();
-				$is_first_message = true;
+				$guest_user_id     = 'user_' . time() . '_' . wp_generate_uuid4();
+				$is_first_message  = true;
 				$new_message = [
 					'sender'  => 'user',
 					'message' => isset($_POST['message']) ? sanitize_text_field(wp_unslash($_POST['message'])) : '',
@@ -204,6 +217,7 @@ class Ace_Live_Support_Public
 					'user_id' => $guest_user_id
 				];
 
+				$messages   = [];
 				$messages[] = $new_message;
 				$data = [
 					'user_id' => $guest_user_id,
@@ -241,7 +255,9 @@ class Ace_Live_Support_Public
 				]);
 			}
 		} else {
-			session_start();
+			if (!session_id()) {
+				session_start();
+			}
 			if (!$user_id && session_id()) {
 				$user_id = isset($_SESSION['ace_guest_id']) ? sanitize_text_field($_SESSION['ace_guest_id']) : '';
 
@@ -276,7 +292,6 @@ class Ace_Live_Support_Public
 					$this->insert_message($messages_table, $row->user_id, $messages);
 				}
 			}
-			wp_cache_delete( $cache_key, 'ace_live_chat' );
 			$this->chat_room($user_id, $new_message);
 			wp_send_json_success($new_message);
 		}

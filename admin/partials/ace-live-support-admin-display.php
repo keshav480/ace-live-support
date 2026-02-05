@@ -36,7 +36,12 @@ $current = $dt->format('Y-m-d H:i:s');
                      <li class="ace-bulk-read-all-user" data-nonce="<?php echo esc_attr(wp_create_nonce('ace_bulk_read_all_user')); ?>" data-action="read">Mark as Read</li>
                 </ul>
         </div>
-
+        <div class="ace-user-search">
+            <div class="ace-search-wrapper">
+                <span class="ace-search-icon"><i class="fa fa-search"></i></span>
+                <input type="text" id="ace-user-search-input" placeholder="Search users..." />
+            </div>
+        </div>
         <?php
         if ($users) {
             foreach ($users as $row) {

@@ -372,5 +372,19 @@ $("#ace-bulk-select-all-users").change(function() {
 	}
 });
 
+jQuery(document).ready(function($) {
+    $('#ace-user-search-input').on('input', function() {
+        var query = $(this).val().toLowerCase();
+        $('.ace-user-item-outer').each(function() {
+            var username = $(this).data('username').toLowerCase();
+	         var name = $(this).data('username').toLowerCase();
+            if (username.indexOf(query) !== -1 || name.indexOf(query) !== -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
 
 })( jQuery );
