@@ -178,6 +178,9 @@ class Ace_Live_Support
 		$this->loader->add_action('wp_ajax_nopriv_upload_chat_message',$plugin_admin, 'upload_chat_message');
 		$this->loader->add_action('wp_ajax_ace_get_file', $plugin_admin, 'ace_get_file');
 		$this->loader->add_action('wp_ajax_nopriv_ace_get_file', $plugin_admin, 'ace_get_file');
+		// delete message
+		$this->loader->add_action('wp_ajax_ace_delete_message', $plugin_admin, 'ace_delete_message');
+		$this->loader->add_action('wp_ajax_nopriv_ace_delete_message', $plugin_admin, 'ace_delete_message');
 	}
 
 	/**
@@ -206,6 +209,7 @@ class Ace_Live_Support
 
 		$this->loader->add_action('wp_ajax_ace_get_file', $plugin_public, 'ace_get_file');
 		$this->loader->add_action('wp_ajax_nopriv_ace_get_file', $plugin_public, 'ace_get_file');
+		
 	}
 
 

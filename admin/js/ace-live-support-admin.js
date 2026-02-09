@@ -629,10 +629,10 @@ $(document).on('click', '.ace-delete-btn', function () {
     if (!confirm('Delete this file?')) return;
 
     const fileName = $(this).data('file');
-    const wrapper = $(this).closest('.ace-file-preview');
+    const wrapper = $(this).closest('.ace-msg-user.file');
 
     $.post(ace_chat_admin.ajax_url, {
-        action: 'ace_delete_message_file',
+        action: 'ace_delete_message',
         user_id: selectedUser,
         file: fileName,
         nonce: ace_chat_admin.nonce
