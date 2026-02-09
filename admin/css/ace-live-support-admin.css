@@ -50,22 +50,78 @@ img.ace-file-preview {
 .ace-msg-admin.file {
     position: relative;
 }
-.ace-file-preview.file.application\/pdf {
+.ace-file-preview.file.application\/pdf ,.ace-file-preview.file {
     background: #fff;
     padding: 12px;
     border-radius: 9px;
 }
-.ace-file-preview.file.application\/pdf a {
+.ace-file-preview.file.application\/pdf a , .ace-file-preview.file a {
     text-decoration: none;
 }
-.ace-msg-user.file .ace-file-preview.image img.ace-file-preview {
+.ace-msg-user.file .ace-file-preview.image img.ace-file-preview ,.ace-msg-admin.file .ace-file-preview.image img.ace-file-preview {
     width: 200px;
 }
 .ace-msg-user.file {
     background: none;
 }
-.ace-msg-user.file .ace-file-preview.image {
+.ace-msg-user.file .ace-file-preview.image ,.ace-msg-admin.file .ace-file-preview.image {
     display: flex;
     align-items: center;
 }
 
+.ace-file-actions {
+    position: relative;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.ace-actions-toggle {
+    cursor: pointer;
+    padding: 4px 6px;
+    font-size: 14px;
+}
+
+.ace-actions-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    min-width: 140px;
+    z-index: 1000;
+}
+
+
+.ace-actions-dropdown a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+}
+
+.ace-actions-dropdown a:hover {
+    background: #f5f5f5;
+}
+.ace-actions-dropdown i {
+    margin-right: 6px;
+}
+
+.ace-msg-admin_outer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.ace-msg-user_outer {
+    display: flex;
+    align-items: center;
+}
+.ace-msg-user {
+    min-width: 90px;
+}
+.ace-msg-admin.file span.ace-actions-toggle {
+    color: #000;
+}

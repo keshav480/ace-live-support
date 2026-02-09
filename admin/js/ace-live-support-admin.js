@@ -76,32 +76,82 @@
 								<a href="${file.url}" target="_blank">
 									<img src="${file.url}" width="120" alt="${file.name}"class="ace-file-preview" />
 								</a>`;
-						if(msg.sender == 'user'){
-						fileHtml +=`<a href="${file.url}" download="${file.name}" class="ace-download-btn">
-									<i class="fa-regular fa-circle-down"></i>
-									</a>`;
-								}
+						// if(msg.sender == 'user'){
+						fileHtml +=`<div class="ace-file-actions">
+									<span class="ace-actions-toggle">
+										<i class="fa-solid fa-ellipsis-vertical"></i>
+									</span>
+
+									<div class="ace-actions-dropdown">
+										<a href="${file.url}" 
+										download="${file.name}" 
+										class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i> Download
+										</a>
+
+										<a href="javascript:void(0)" 
+										class="ace-delete-btn" 
+										data-file="${file.name}">
+											<i class="fa-regular fa-trash-can"></i> Delete
+										</a>
+									</div>
+								</div>
+									`;
+								// }
 						fileHtml +=`</div>`;
 					} else if (file.type === 'application/pdf') {
 						fileHtml += `
 							<div class="ace-file-preview file application/pdf">
 							<a href="${file.url}" target="_blank">📄 ${file.name}</a>`;
-								if(msg.sender == 'user'){
-								fileHtml +=`<a href="${file.url}" download="${file.name}" class="ace-download-btn">
-										<i class="fa-regular fa-circle-down"></i>
-										</a>`;
-								}
+								// if(msg.sender == 'user'){
+								fileHtml +=`<div class="ace-file-actions">
+									<span class="ace-actions-toggle">
+										<i class="fa-solid fa-ellipsis-vertical"></i>
+									</span>
+
+									<div class="ace-actions-dropdown">
+										<a href="${file.url}" 
+										download="${file.name}" 
+										class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i> Download
+										</a>
+
+										<a href="javascript:void(0)" 
+										class="ace-delete-btn" 
+										data-file="${file.name}">
+											<i class="fa-regular fa-trash-can"></i> Delete
+										</a>
+									</div>
+								</div>
+									`;
+								// }
 						fileHtml +=`</div>`;
 					} else {
 						fileHtml += `
 							<div class="ace-file-preview file application/pdf">
 								<a href="${file.url}" target="_blank">📎 ${file.name}</a>`;
-							if(msg.sender == 'user'){
+							// if(msg.sender == 'user'){
 								fileHtml +=`
-								<a href="${file.url}" download="${file.name}" class="ace-download-btn">
-								<i class="fa-regular fa-circle-down"></i>
-								</a>`;
-							}
+								<div class="ace-file-actions">
+									<span class="ace-actions-toggle">
+										<i class="fa-solid fa-ellipsis-vertical"></i>
+									</span>
+
+									<div class="ace-actions-dropdown">
+										<a href="${file.url}" 
+										download="${file.name}" 
+										class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i> Download
+										</a>
+
+										<a href="javascript:void(0)" 
+										class="ace-delete-btn" 
+										data-file="${file.name}">
+											<i class="fa-regular fa-trash-can"></i> Delete
+										</a>
+									</div>
+								</div>`;
+							// }
 						fileHtml += `</div>`;
 					}
 					});
@@ -115,8 +165,21 @@
 					$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
 					if (callback) callback();
 				});
-			}else{
-				var msgHtml = `<div class="${cls}">${msg.message}<div class="ace-msg-time">${timeText}</div></div>`;
+			}else{						
+				var msgHtml = `<div class="${cls}_outer"><div class="${cls}">${msg.message}<div class="ace-msg-time">${timeText}</div></div>
+								<div class="ace-file-actions">
+									<span class="ace-actions-toggle">
+										<i class="fa-solid fa-ellipsis-vertical"></i>
+									</span>
+
+									<div class="ace-actions-dropdown">
+										<a href="javascript:void(0)" 
+										class="ace-delete-btn" 
+										data-file="${msg.message}">
+											<i class="fa-regular fa-trash-can"></i> Delete
+										</a>
+									</div>
+								</div></outer>`;
 				$("#ace-admin-chat").append(dateSeparator+msgHtml);
 				$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
 				if (callback) callback();
@@ -550,5 +613,38 @@ $(document).ready(function() {
 		});
     });
 });
+// show message option 
+$(document).on('click', '.ace-actions-toggle', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $('.ace-actions-dropdown').not($(this).next()).hide();
+    $(this).next('.ace-actions-dropdown').toggle();
+});
+
+$(document).on('click', function () {
+    $('.ace-actions-dropdown').hide();
+});
+// delete the message 
+$(document).on('click', '.ace-delete-btn', function () {
+    if (!confirm('Delete this file?')) return;
+
+    const fileName = $(this).data('file');
+    const wrapper = $(this).closest('.ace-file-preview');
+
+    $.post(ace_chat_admin.ajax_url, {
+        action: 'ace_delete_message_file',
+        user_id: selectedUser,
+        file: fileName,
+        nonce: ace_chat_admin.nonce
+    }, function (res) {
+        if (res.success) {
+            wrapper.fadeOut(300, function () {
+                $(this).remove();
+            });
+        }
+    });
+});
+
+
 
 })( jQuery );
