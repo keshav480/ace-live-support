@@ -102,6 +102,9 @@ class Ace_Live_Support_Public
 			'pusher_cluster' => $ace_pusher_cluster,
 			'user_id' => $user_id
 		]);
+
+
+	
 	}
 
 	function ace_chat_get()

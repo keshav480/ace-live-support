@@ -150,10 +150,19 @@ $current = $dt->format('Y-m-d H:i:s');
                 <div class="ace-admin-chat-message"></div>
             <?php endif; ?>
         </div>
-
+        <div id="ace-file-preview" style="margin-top:10px; display:flex; gap:5px; flex-wrap:wrap;"></div>
         <div class="ace-chat-input-area">
             <input type="text" id="ace-admin-input" placeholder="Type reply..." />
-            <button id="ace-admin-send">Send <div id="ace-loader" class="ace-loader loader" style="display:none;"></div></button>
+            <input type="file" id="ace-admin-files" multiple style="display:none;" />
+            <button id="ace-admin-upload-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 5c-1.1 0-2 .9-2 2H6.83l-.94.94C5.34 8.39 5 8.69 5 9.07V18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V9.07c0-.38-.34-.68-.89-.68l-.94-.94H14c0-1.1-.9-2-2-2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 2c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
+                </svg>
+            </button>
+            <button id="ace-admin-send">
+                Send 
+                <div id="ace-loader" class="ace-loader loader" style="display:none;"></div>
+            </button>
         </div>
 
     </div>

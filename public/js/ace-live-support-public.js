@@ -251,4 +251,27 @@
 				}
 			}, 1000);
 		}
+		//. Get user location  
+		if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(
+			function (position) {
+			const lat = position.coords.latitude;
+			const lon = position.coords.longitude;
+
+			// Reverse geocode with OpenStreetMap Nominatim
+			fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+				.then(response => response.json())
+				.then(data => {
+				console.log("Address:", data.display_name);
+				})
+				.catch(err => console.error("Error fetching address:", err));
+			},
+			function (error) {
+			console.error("Error:", error.message);
+			}
+		);
+		} else {
+		alert("Geolocation is not supported by this browser.");
+		}
+
 })( jQuery );

@@ -173,6 +173,11 @@ class Ace_Live_Support
 			$this->loader->add_filter( 'wp_mail_from',      $plugin_admin, 'ace_smtp_from_email' );
 			$this->loader->add_filter( 'wp_mail_from_name', $plugin_admin, 'ace_smtp_from_name' );
 		}
+
+		$this->loader->add_action('wp_ajax_upload_chat_message',$plugin_admin, 'upload_chat_message');
+		$this->loader->add_action('wp_ajax_nopriv_upload_chat_message',$plugin_admin, 'upload_chat_message');
+		$this->loader->add_action('wp_ajax_ace_get_file', $plugin_admin, 'ace_get_file');
+		$this->loader->add_action('wp_ajax_nopriv_ace_get_file', $plugin_admin, 'ace_get_file');
 	}
 
 	/**

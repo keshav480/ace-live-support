@@ -183,6 +183,7 @@ class Ace_Live_Support_Admin
 			'ace-live-chat-settings',
 			[$this, 'settings_page_callback']
 		);
+		
 	}
 	public function update_user_status(	$table , $user_id){
 		global $wpdb;
@@ -597,8 +598,175 @@ function bulk_delete($tablename, $ids){
 }
 
 
+function upload_chat_message(){
+    check_ajax_referer('ace_chat_nonce','nonce');
+
+   	$user_id = isset($_POST['user_id']) ? sanitize_text_field(wp_unslash($_POST['user_id'])) : '';
+    $message = sanitize_text_field($_POST['message']);
+
+    global $wpdb;
+
+    // Get the internal numeric ID of the user chat
+    $UserIdObj = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}ace_live_chat WHERE user_id = %s",
+            $user_id
+        )
+    );
+    $UserId = $UserIdObj ? $UserIdObj->id : 0;
+
+    $uploaded_files = [];
+	$file_name_data =[];
+    if(!empty($_FILES['files'])){
+        $upload_dir = wp_upload_dir();
+        $chat_dir = $upload_dir['basedir'] . '/ace-chat/User_'.$UserId.'/';
+
+        if(!file_exists($chat_dir)){
+            wp_mkdir_p($chat_dir);
+        }
+
+        foreach($_FILES['files']['name'] as $key => $name){
+            $tmp_name = $_FILES['files']['tmp_name'][$key];
+            $file_type = $_FILES['files']['type'][$key];
+
+            // Sanitize original file name
+            $file_base = pathinfo($name, PATHINFO_FILENAME);
+            $file_ext  = pathinfo($name, PATHINFO_EXTENSION);
+            $file_base = sanitize_file_name($file_base);
+
+            // Append current date and time
+            $datetime = date('Ymd_His'); // e.g. 20260206_141512
+            $file_name = $file_base . '_' . $datetime . '.' . $file_ext;
+			$file_name_data []= $file_name;
+            $target_file = $chat_dir . $file_name;
+
+            // Move uploaded file
+            if(move_uploaded_file($tmp_name, $target_file)){
+                $uploaded_files[] = [
+                    'name' => $file_name,
+                    'url'  => $upload_dir['baseurl'] . '/ace-chat/User_'.$UserId.'/'.$file_name,
+                    'type' => $file_type
+                ];
+            }
+        }
+    }	
+
+	
+		$message_text = isset($_POST['message']) ? sanitize_text_field(wp_unslash(implode(',', $file_name_data))) : '';
+		$saved_tz = get_option('ace_timezone', 'Asia/Kolkata');
+		$dt = new DateTime('now', new DateTimeZone($saved_tz));
+		$new_message = [
+			'sender'  => 'admin',
+			'type'	  => 'file',
+			'message' => $message_text,
+			'time'    => $dt->format('Y-m-d H:i:s'),
+			'user_id' => $user_id
+		];
+		$table = esc_sql($wpdb->prefix . 'ace_live_chat');
+		$messages_table = esc_sql($wpdb->prefix . 'ace_live_chat_messages');
+
+		$cache_key = 'ace_live_chat_user_' . $user_id;
+		$row = wp_cache_get($cache_key, 'ace_live_chat');
+		if ($row === false) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT u.id AS chat_id, m.id AS message_id, m.messages 
+					FROM {$wpdb->prefix}ace_live_chat AS u
+					LEFT JOIN {$wpdb->prefix}ace_live_chat_messages AS m ON u.id = m.user_id
+					WHERE u.user_id = %s",
+					$user_id
+				)
+			);
+			wp_cache_set($cache_key, $row, 'ace_live_chat', 60);
+		}
+
+		$messages = !empty($row->messages) ? json_decode($row->messages, true) : [];
+		if (!is_array($messages)) {
+			$messages = [];
+		}
+
+		$messages[] = $new_message;
+
+		if ($row && $row->chat_id) {
+			// Update existing message record
+			if (!empty($row->message_id)) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->update(
+					$messages_table,
+					['messages' => wp_json_encode($messages)],
+					['id' => $row->message_id],
+					['%s'],
+					['%d']
+				);
+			} else {
+				// Insert if messages record does not exist
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->insert(
+					$messages_table,
+					[
+						'user_id'  => $row->chat_id,
+						'messages' => wp_json_encode($messages)
+					],
+					['%d', '%s']
+				);
+			}
+			wp_cache_delete($cache_key, 'ace_live_chat');
+			wp_cache_delete('ace_live_chat_admin_users', 'ace_live_chat');
+		}
+
+		$pusher = new Pusher(
+			get_option('ace_pusher_key', ''),
+			get_option('ace_pusher_secret', ''),
+			get_option('ace_pusher_app_id', ''),
+			[
+				'cluster' => get_option('ace_pusher_cluster', 'ap2'),
+				'useTLS' => true
+			]
+		);
+		$pusher->trigger('live-chat-' . $user_id, 'new-message', $new_message);
+
+    wp_send_json_success([
+        'message' => $message,
+        'files'   => $uploaded_files
+    ]);
+}
+// get file url for download in chat
+function ace_get_file() {
+    check_ajax_referer('ace_chat_nonce', 'nonce');
+    global $wpdb;
+    $urls = [];
+    $user_id = sanitize_text_field($_POST['user_id']);
+    $message = sanitize_text_field($_POST['message']);
+    if (empty($user_id) || empty($message)) {
+        wp_send_json_error(['message' => 'Invalid request']);
+    }
+    $userID = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}ace_live_chat WHERE user_id = %s",
+            $user_id
+        )
+    );
+    if (!$userID) {
+        wp_send_json_error(['message' => 'User not found']);
+    }
+    $file_name_array = array_map('trim', explode(',', $message));
+    $upload_dir = wp_upload_dir();
+    foreach ($file_name_array as $file_name) {
+        $file_name = sanitize_file_name($file_name);
+        $urls[] = $upload_dir['baseurl'] . '/ace-chat/User_' . $userID . '/' . $file_name;
+    }
+    wp_send_json_success([
+        'files' => $urls
+    ]);
+}
 
 
+
+
+
+
+// ace live chat setting page 
 public function ace_test_smtp() {
     add_action('wp_mail_failed', function($error){
         $error_message = $error->get_error_message();
@@ -615,6 +783,8 @@ public function ace_test_smtp() {
         wp_send_json_error("<span style='color:red;'>SMTP failed! No detailed error returned.</span>");
     }
 }
+
+
 
 
 

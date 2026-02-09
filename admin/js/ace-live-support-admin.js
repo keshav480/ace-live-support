@@ -25,11 +25,10 @@
 		}
 
 		var lastMessageDate = ""; 
-		function appendMessage(msg) {
+		function appendMessage(msg, callback) {
 			var cls = (msg.sender == 'user') ? 'ace-msg-user' : 'ace-msg-admin';
 			var timeText = '';
 			var dateSeparator = '';
-		
 			if (msg.time) {
 				var d = new Date(msg.time);
 				var hrs = d.getHours();
@@ -58,16 +57,26 @@
 					lastMessageDate = msgDateString;
 				}
 			}
-		
-			$("#ace-admin-chat").append(
-				dateSeparator +
-				`<div class="${cls}">
-					${msg.message}
-					<div class="ace-msg-time">${timeText}</div>
-				</div>`
-			);
-		
-			$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
+			if(msg.type === 'file'){
+				$.post(ace_chat_admin.ajax_url, {
+					action: 'ace_get_file',
+					user_id: selectedUser,
+					message: msg.message,
+					nonce: ace_chat_admin.nonce
+				}, function (res) {
+					res.data.files.forEach(function (fileUrl) {
+						var msgHtml = `<div class="${cls} file"><img src="${fileUrl}" width="100" class="ace-file-preview"/><div class="ace-msg-time">${timeText}</div></div>`;
+						$("#ace-admin-chat").append(dateSeparator+msgHtml);
+						$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
+					});
+					if (callback) callback();
+				});
+			}else{
+				var msgHtml = `<div class="${cls}">${msg.message}<div class="ace-msg-time">${timeText}</div></div>`;
+				$("#ace-admin-chat").append(dateSeparator+msgHtml);
+				$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
+				if (callback) callback();
+			}		
 		}
 		
 		//   SEND ADMIN MESSAGE
@@ -117,9 +126,18 @@
 					nonce: ace_chat_admin.nonce
 				}, function (res) {
 					if (res.success) {
-						$.each(res.data, function (i, msg) {
-							appendMessage(msg);
-						});
+						let messageQueue = res.data;
+						let currentIndex = 0;
+						
+						function processNextMessage() {
+							if (currentIndex < messageQueue.length) {
+								let msg = messageQueue[currentIndex];
+								currentIndex++;
+								appendMessage(msg, processNextMessage);
+							}
+						}
+						
+						processNextMessage();
 					}
 				});
 				subscribeToChannel(selectedUser);
@@ -384,6 +402,108 @@ jQuery(document).ready(function($) {
                 $(this).hide();
             }
         });
+    });
+});
+
+$(document).ready(function() {
+    let selectedFiles = [];
+    $('#ace-admin-upload-btn').on('click', function() {
+        $('#ace-admin-files').click();
+    });
+    $('#ace-admin-files').on('change', function() {
+		let urlParams = new URLSearchParams(window.location.search);
+		var selectedUser = '';
+		if (urlParams.has("user")) {
+			let uid = urlParams.get("user");
+			let userItem = $('.ace-user-item[data-userid="' + uid + '"]');
+			selectedUser = $(userItem).data('userid');
+		}
+		
+        const newFiles = Array.from(this.files); 
+        const previewDiv = $('#ace-file-preview');	
+        selectedFiles = selectedFiles.concat(newFiles);
+        previewDiv.empty();
+        selectedFiles.forEach((file, index) => {
+            let fileDiv = $('<div>', {
+                css: {
+                    padding: '5px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                }
+            });
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = $('<img>', {
+                        src: e.target.result,
+                        width: 50,
+                        height: 50,
+                        css: { objectFit: 'cover', borderRadius: '4px' }
+                    });
+                    fileDiv.prepend(img);
+                    fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                const pdfIcon = $('<span>').text('📄 ' + file.name);
+                fileDiv.append(pdfIcon);
+                fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+            } else {
+                const fileSpan = $('<span>').text('📎 ' + file.name);
+                fileDiv.append(fileSpan);
+                fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+            }
+            previewDiv.append(fileDiv);
+        });
+        $('#ace-admin-files').val('');
+    });
+    $('#ace-file-preview').on('click', 'button', function() {
+			const index = $(this).data('index');
+			selectedFiles.splice(index, 1);
+			$(this).parent().remove();
+			$('#ace-file-preview div button').each(function(i){
+				$(this).data('index', i);
+			});
+		});
+		$('#ace-admin-send').on('click', function() {
+			if(selectedFiles .length === 0){
+				return;
+			}
+			const message = $('#ace-admin-input').val();
+			$('#ace-loader').show();
+			const formData = new FormData();
+			formData.append('action', 'upload_chat_message'); 
+			formData.append('user_id', selectedUser);
+			formData.append('message', message);
+			formData.append('nonce', ace_chat_admin.nonce);
+			formData.append('message', message);
+			
+			selectedFiles.forEach(file => formData.append('files[]', file));
+			$.ajax({
+			url: ace_chat_admin.ajax_url,
+			type: 'POST',
+			data: formData,
+			processData: false, // Important!
+			contentType: false,    
+			success: function(res) {
+				$('#ace-loader').hide();
+				if (res.success) {
+					$('#ace-admin-input').val('');
+					selectedFiles = [];
+					$('#ace-file-preview').empty();
+				} else {
+					alert('Error: ' + res.data);
+				}
+			},
+			error: function(err) {
+				$('#ace-loader').hide();
+				console.error(err);
+				alert('Error sending message');
+			}
+		});
     });
 });
 
