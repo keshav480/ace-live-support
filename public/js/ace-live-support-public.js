@@ -105,7 +105,7 @@
 											<i class="fa-regular fa-circle-down"></i>
 											</a>`;
 										}
-							fileHtml += `</div>`;
+								fileHtml += `</div>`;
 						}
 					});
 
@@ -149,9 +149,9 @@
 		
 		// Send message
 		function sendMessage() {
-			var message =  input.val().trim();
+			var message =  $('#ace-chat-input').val().trim();
 			if (message === '') return;
-			 input.val('');
+			 $('#ace-chat-input').val('');
 			// $('#ace-loader-send-button').show();
 			$.post(
 				ace_chat_ajax.ajax_url,
@@ -167,15 +167,10 @@
 						if (res.data.register === true) {
 							initializeChat(user_id);
 						}
-						loadMessages();
+						// loadMessages();
 					}
 				}
 			)
-			// .fail(function () {
-			// 	// $('#ace-loader-send-button').hide();
-			// 	 input.val(message);
-			// 	alert('Failed to send message');
-			// });
 		}
 		
 	
