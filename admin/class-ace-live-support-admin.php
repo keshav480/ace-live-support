@@ -734,36 +734,47 @@ function upload_chat_message(){
 // get file url for download in chat
 function ace_get_file() {
     check_ajax_referer('ace_chat_nonce', 'nonce');
+
     global $wpdb;
-    $urls = [];
+
     $user_id = sanitize_text_field($_POST['user_id']);
     $message = sanitize_text_field($_POST['message']);
+
     if (empty($user_id) || empty($message)) {
         wp_send_json_error(['message' => 'Invalid request']);
     }
+
     $userID = $wpdb->get_var(
         $wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}ace_live_chat WHERE user_id = %s",
             $user_id
         )
     );
+
     if (!$userID) {
         wp_send_json_error(['message' => 'User not found']);
     }
+
     $file_name_array = array_map('trim', explode(',', $message));
     $upload_dir = wp_upload_dir();
+
+    $files = [];
+
     foreach ($file_name_array as $file_name) {
         $file_name = sanitize_file_name($file_name);
-        $urls[] = $upload_dir['baseurl'] . '/ace-chat/User_' . $userID . '/' . $file_name;
+        $file_type = wp_check_filetype($file_name)['type'];
+
+        $files[] = [
+            'name' => $file_name,
+            'url'  => $upload_dir['baseurl'] . '/ace-chat/User_' . $userID . '/' . $file_name,
+            'type' => $file_type
+        ];
     }
+
     wp_send_json_success([
-        'files' => $urls
+        'files' => $files
     ]);
 }
-
-
-
-
 
 
 // ace live chat setting page 

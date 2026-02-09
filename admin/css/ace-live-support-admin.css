@@ -28,13 +28,33 @@ input#ace-user-search-input {
 .ace-msg-admin.file {
     width: 400px;
     background: none;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
 img.ace-file-preview {
     width: 100%;
+    border-radius: 13px;
 }
 .ace-msg-admin.file .ace-msg-time {
     color: #000;
     text-align: right;
+}
+
+.ace-msg-admin.file .ace-msg-time {
+    position: absolute;
+    z-index: 99999;
+  right: 22px;
+    bottom: 16px;
+}
+
+.ace-msg-admin.file {
+    position: relative;
+}
+.ace-file-preview.file.application\/pdf {
+    background: #fff;
+    padding: 12px;
+    border-radius: 9px;
+}
+.ace-file-preview.file.application\/pdf a {
+    text-decoration: none;
 }

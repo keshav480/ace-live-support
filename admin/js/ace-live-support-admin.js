@@ -64,11 +64,42 @@
 					message: msg.message,
 					nonce: ace_chat_admin.nonce
 				}, function (res) {
-					res.data.files.forEach(function (fileUrl) {
-						var msgHtml = `<div class="${cls} file"><img src="${fileUrl}" width="100" class="ace-file-preview"/><div class="ace-msg-time">${timeText}</div></div>`;
-						$("#ace-admin-chat").append(dateSeparator+msgHtml);
-						$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
+						
+					if (!res.success || !res.data.files.length) return;
+					let fileHtml = '';
+				
+					res.data.files.forEach(function (file) {
+
+					if (file.type && file.type.startsWith('image/')) {
+						fileHtml = `
+							<div class="ace-file-preview image">
+								<a href="${file.url}" target="_blank">
+									<img src="${file.url}" width="120" alt="${file.name}"class="ace-file-preview" />
+								</a>
+							</div>
+						`;
+					} else if (file.type === 'application/pdf') {
+						fileHtml = `
+							<div class="ace-file-preview file application/pdf">
+								<a href="${file.url}" target="_blank">📄 ${file.name}</a>
+							</div>
+						`;
+					} else {
+						fileHtml = `
+							<div class="ace-file-preview file application/pdf">
+								<a href="${file.url}" target="_blank">📎 ${file.name}</a>
+							</div>
+						`;
+					}
 					});
+					const msgHtml = `
+						<div class="${cls} file">
+							${fileHtml}
+							<div class="ace-msg-time">${timeText}</div>
+						</div>
+					`;
+					$("#ace-admin-chat").append(dateSeparator + msgHtml);
+					$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
 					if (callback) callback();
 				});
 			}else{
