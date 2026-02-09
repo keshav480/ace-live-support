@@ -16,48 +16,94 @@
 	var isGuest = (!userid || userid == 0);
 	var lastMessageDate = '';
 
-	function appendMessage(msg) {
-		var cls = msg.sender === 'user' ? 'ace-msg-user' : 'ace-msg-admin';
-		var timeText = '';
-		var dateSeparator = '';
-		if (msg.time) {
-			var date = new Date(msg.time);
-			// ---------- FORMAT TIME ----------
-			var hours = date.getHours();
-			var minutes = date.getMinutes();
-			var ampm = hours >= 12 ? 'PM' : 'AM';
-			hours = hours % 12;
-			hours = hours ? hours : 12;
-			minutes = minutes < 10 ? '0' + minutes : minutes;
-			timeText = hours + ':' + minutes + ' ' + ampm;
 
-			// ---------- FORMAT DATE ----------
-			var options = { day: '2-digit', month: 'short', year: 'numeric' };
-			var formattedDate = date.toLocaleDateString('en-US', options);
+		function appendMessage(msg, callback) {
 
-			// ---------- CHECK TODAY / YESTERDAY ----------
-			var today = new Date();
-			var yesterday = new Date();
-			yesterday.setDate(today.getDate() - 1);
+			const cls = msg.sender === 'user' ? 'ace-msg-user' : 'ace-msg-admin';
+			let timeText = '';
+			let dateSeparator = '';
 
-			var todayStr = today.toLocaleDateString('en-US', options);
-			var yesterdayStr = yesterday.toLocaleDateString('en-US', options);
+			/* ---------- TIME + DATE ---------- */
+			if (msg.time) {
+				const date = new Date(msg.time);
 
-			var displayDate = formattedDate;
+				let hours = date.getHours();
+				let minutes = date.getMinutes();
+				const ampm = hours >= 12 ? 'PM' : 'AM';
+				hours = hours % 12 || 12;
+				minutes = minutes < 10 ? '0' + minutes : minutes;
+				timeText = `${hours}:${minutes} ${ampm}`;
 
-			if (formattedDate === todayStr) {
-				displayDate = "Today";
-			} else if (formattedDate === yesterdayStr) {
-				displayDate = "Yesterday";
+				const options = { day: '2-digit', month: 'short', year: 'numeric' };
+				const formattedDate = date.toLocaleDateString('en-US', options);
+
+				const today = new Date().toLocaleDateString('en-US', options);
+				const yesterday = new Date(Date.now() - 86400000).toLocaleDateString('en-US', options);
+
+				let displayDate = formattedDate;
+				if (formattedDate === today) displayDate = 'Today';
+				else if (formattedDate === yesterday) displayDate = 'Yesterday';
+
+				if (lastMessageDate !== formattedDate) {
+					dateSeparator = `<div class="ace-date-separator">${displayDate}</div>`;
+					lastMessageDate = formattedDate;
+				}
 			}
 
-			// ---------- INSERT DATE SEPARATOR ----------
-			if (lastMessageDate !== formattedDate) {
-				dateSeparator = `<div class="ace-date-separator">${displayDate}</div>`;
-				lastMessageDate = formattedDate;
+			/* ---------- FILE MESSAGE ---------- */
+			if (msg.type === 'file') {
+
+				// Placeholder (prevents UI jump)
+				const placeholderId = `file-${Date.now()}`;
+				$('#ace-chat-messages').append(
+					dateSeparator +
+					`<div class="${cls} file" id="${placeholderId}">
+						<div class="ace-file-loading">Loading files…</div>
+						<div class="ace-msg-time">${timeText}</div>
+					</div>`
+				);
+
+				$.post(ace_chat_ajax.ajax_url, {
+					action: 'ace_get_file',
+					user_id: ace_chat_ajax.user_id,
+					message: msg.message,
+					nonce: ace_chat_ajax.nonce
+				}, function (res) {
+					if (!res.success || !Array.isArray(res.data.files)) return;
+					let fileHtml = '';
+					res.data.files.forEach(file => {
+						if (file.type && file.type.startsWith('image/')) {
+							fileHtml += `
+								<div class="ace-file-preview image">
+									<a href="${file.url}" target="_blank">
+										<img src="${file.url}" alt="${file.name}" />
+									</a>
+								</div>`;
+						} else if (file.type === 'application/pdf') {
+							fileHtml += `
+								<div class="ace-file-preview file">
+									<a href="${file.url}" target="_blank">📄 ${file.name}</a>
+								</div>`;
+						} else {
+							fileHtml += `
+								<div class="ace-file-preview file">
+									<a href="${file.url}" target="_blank">📎 ${file.name}</a>
+								</div>`;
+						}
+					});
+
+					$(`#${placeholderId}`).html(`
+						${fileHtml}
+						<div class="ace-msg-time">${timeText}</div>
+					`);
+					$('#ace-chat-messages').scrollTop($('#ace-chat-messages')[0].scrollHeight);
+					if (callback) callback();
+				});
+
+				return;
 			}
-		}
-			// Append date separator + message
+
+			/* ---------- TEXT MESSAGE ---------- */
 			$('#ace-chat-messages').append(
 				dateSeparator +
 				`<div class="${cls}">
@@ -65,10 +111,11 @@
 					<div class="ace-msg-time">${timeText}</div>
 				</div>`
 			);
-		
-			// Scroll to bottom
+
 			$('#ace-chat-messages').scrollTop($('#ace-chat-messages')[0].scrollHeight);
+			if (callback) callback();
 		}
+
 		
 		// Load previous messages
 		function loadMessages(){
@@ -251,27 +298,102 @@
 				}
 			}, 1000);
 		}
-		//. Get user location  
-		if ("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(
-			function (position) {
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-
-			// Reverse geocode with OpenStreetMap Nominatim
-			fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-				.then(response => response.json())
-				.then(data => {
-				console.log("Address:", data.display_name);
-				})
-				.catch(err => console.error("Error fetching address:", err));
-			},
-			function (error) {
-			console.error("Error:", error.message);
-			}
-		);
-		} else {
-		alert("Geolocation is not supported by this browser.");
-		}
+	
+	// multiple file upload for public 
+	$(document).ready(function() {
+		let selectedFiles = [];
+		$('#ace-public-upload-btn').on('click', function() {
+			$('#ace-public-files').click();
+		});
+		var selectedUser = ace_chat_ajax.user_id;
+		$('#ace-public-files').on('change', function() {
+			
+			const newFiles = Array.from(this.files); 
+			const previewDiv = $('#ace-file-preview');	
+			selectedFiles = selectedFiles.concat(newFiles);
+			previewDiv.empty();
+			selectedFiles.forEach((file, index) => {
+				let fileDiv = $('<div>', {
+					css: {
+						padding: '5px',
+						border: '1px solid #ccc',
+						borderRadius: '4px',
+						display: 'flex',
+						alignItems: 'center',
+						gap: '5px'
+					}
+				});
+				if (file.type.startsWith('image/')) {
+					const reader = new FileReader();
+					reader.onload = function(e) {
+						const img = $('<img>', {
+							src: e.target.result,
+							width: 50,
+							height: 50,
+							css: { objectFit: 'cover', borderRadius: '4px' }
+						});
+						fileDiv.prepend(img);
+						fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+					};
+					reader.readAsDataURL(file);
+				} else if (file.type === 'application/pdf') {
+					const pdfIcon = $('<span>').text('📄 ' + file.name);
+					fileDiv.append(pdfIcon);
+					fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+				} else {
+					const fileSpan = $('<span>').text('📎 ' + file.name);
+					fileDiv.append(fileSpan);
+					fileDiv.append(`<button data-index="${index}" style="border:none; background:none; cursor:pointer; color:red;">&times;</button>`);
+				}
+				previewDiv.append(fileDiv);
+			});
+			$('#ace-admin-files').val('');
+		});
+		$('#ace-file-preview').on('click', 'button', function() {
+				const index = $(this).data('index');
+				selectedFiles.splice(index, 1);
+				$(this).parent().remove();
+				$('#ace-file-preview div button').each(function(i){
+					$(this).data('index', i);
+				});
+			});
+			$('#ace-chat-send').on('click', function() {
+				if(selectedFiles .length === 0){
+					return;
+				}
+				const message = $('#ace-chat-input').val();
+				$('#ace-loader').show();
+				const formData = new FormData();
+				formData.append('action', 'upload_chat_message_public'); 
+				formData.append('user_id', selectedUser);
+				formData.append('message', message);
+				formData.append('nonce', ace_chat_ajax.public_upload_file);
+				formData.append('message', message);
+				
+				selectedFiles.forEach(file => formData.append('files[]', file));
+				$.ajax({
+				url: ace_chat_ajax.ajax_url,
+				type: 'POST',
+				data: formData,
+				processData: false, 
+				contentType: false,    
+				success: function(res) {
+					$('#ace-loader').hide();
+					if (res.success) {
+						$('#ace-admin-input').val('');
+						selectedFiles = [];
+						$('#ace-file-preview').empty();
+					} else {
+						alert('Error: ' + res.data);
+					}
+				},
+				error: function(err) {
+					$('#ace-loader').hide();
+					console.error(err);
+					alert('Error sending message');
+				}
+			});
+		});
+	});
 
 })( jQuery );

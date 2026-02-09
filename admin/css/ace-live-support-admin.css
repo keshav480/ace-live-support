@@ -26,13 +26,13 @@ input#ace-user-search-input {
     pointer-events: none; /* click passes to input */
 }
 .ace-msg-admin.file {
-    width: 400px;
+    /* width: 400px; */
     background: none;
     /* border: 1px solid #000; */
 }
 
 img.ace-file-preview {
-    width: 100%;
+    width: 200px;
     border-radius: 13px;
 }
 .ace-msg-admin.file .ace-msg-time {
@@ -40,12 +40,12 @@ img.ace-file-preview {
     text-align: right;
 }
 
-.ace-msg-admin.file .ace-msg-time {
+/* .ace-msg-admin.file .ace-msg-time {
     position: absolute;
     z-index: 99999;
   right: 22px;
     bottom: 16px;
-}
+} */
 
 .ace-msg-admin.file {
     position: relative;
@@ -57,4 +57,10 @@ img.ace-file-preview {
 }
 .ace-file-preview.file.application\/pdf a {
     text-decoration: none;
+}
+.ace-msg-user.file .ace-file-preview.image img.ace-file-preview {
+    width: 200px;
+}
+.ace-msg-user.file {
+    background: none;
 }

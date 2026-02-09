@@ -124,13 +124,23 @@ if (session_id() && !empty($_SESSION['ace_guest_id'])) {
             <?php endif; 
             ?>
             <div id="ace-chat-messages" style="background-color: <?php echo esc_attr($chatbox_bg); ?>; color: <?php echo esc_attr($chatbox_txt); ?>;"></div>
+             <div id="ace-file-preview" style=" display:flex; gap:5px; flex-wrap:wrap;"></div>
             <div class="ace-chat-send_input" style="background-color: <?php echo $ace_chatbox_header_only === '0' ? esc_attr($header_bg_color) : ''; ?>; color: <?php echo $ace_chatbox_header_only ? esc_attr($header_color) : ''; ?>;">
-                <input type="text" id="ace-chat-input" placeholder="Type your message..." />
+                <span class="input_with_file_outer">
+                    <input type="text" id="ace-chat-input" placeholder="Type your message..." />    
+                     <input type="file" id="ace-public-files" multiple style="display:none;" />
+                    <button id="ace-public-upload-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 5c-1.1 0-2 .9-2 2H6.83l-.94.94C5.34 8.39 5 8.69 5 9.07V18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V9.07c0-.38-.34-.68-.89-.68l-.94-.94H14c0-1.1-.9-2-2-2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 2c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
+                    </svg>
+                    </button>
+                </span>
                 <button id="ace-chat-send" style="background-color: <?php echo esc_attr($btn_bg_color); ?>; color: <?php echo esc_attr($btn_txt_color); ?>;">Send
                     <div id="ace-loader-send-button" style="display:none;">
                         <span class="spinner"></span>
                     </div>
                 </button>
+            
             </div>
         </div>
     </div>

@@ -201,8 +201,13 @@ class Ace_Live_Support
 		$this->loader->add_action('wp_ajax_ace_save_guest_email',$plugin_public, 'ace_save_guest_email');
 		$this->loader->add_action('wp_ajax_nopriv_ace_save_guest_email',$plugin_public, 'ace_save_guest_email');
 		$this->loader->add_action('init',$plugin_public, 'ace_start_session', 1);
-		
+		$this->loader->add_action('wp_ajax_upload_chat_message_public', $plugin_public, 'upload_chat_message');
+		$this->loader->add_action('wp_ajax_nopriv_upload_chat_message_public', $plugin_public, 'upload_chat_message');
+
+		$this->loader->add_action('wp_ajax_ace_get_file', $plugin_public, 'ace_get_file');
+		$this->loader->add_action('wp_ajax_nopriv_ace_get_file', $plugin_public, 'ace_get_file');
 	}
+
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
