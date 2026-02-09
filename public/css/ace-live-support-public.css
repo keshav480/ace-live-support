@@ -19,3 +19,7 @@ button#ace-admin-upload-btn {
 .ace-msg-user.file .ace-file-preview.image img ,.ace-msg-admin.file .ace-file-preview.image img{
   width: 104px;
 }
+.ace-msg-admin.file .ace-file-preview.image {
+  display: flex;
+  align-items: center;
+}

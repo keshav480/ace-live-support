@@ -76,19 +76,36 @@
 							fileHtml += `
 								<div class="ace-file-preview image">
 									<a href="${file.url}" target="_blank">
-										<img src="${file.url}" alt="${file.name}" />
-									</a>
-								</div>`;
+										<img src="${file.url}" alt="${file.name}" /></a>`;
+										if(msg.sender != 'user'){
+											fileHtml +=`
+											<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i>
+											</a>`;
+										}
+							fileHtml +=`</div>`;
 						} else if (file.type === 'application/pdf') {
 							fileHtml += `
 								<div class="ace-file-preview file">
-									<a href="${file.url}" target="_blank">📄 ${file.name}</a>
-								</div>`;
+									<a href="${file.url}" target="_blank">📄 ${file.name}</a>`;
+									if(msg.sender != 'user'){
+											fileHtml +=`
+											<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i>
+											</a>`;
+										}
+							fileHtml += `</div>`;
 						} else {
 							fileHtml += `
 								<div class="ace-file-preview file">
-									<a href="${file.url}" target="_blank">📎 ${file.name}</a>
-								</div>`;
+									<a href="${file.url}" target="_blank">📎 ${file.name}</a>`
+									if(msg.sender != 'user'){
+											fileHtml +=`
+											<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+											<i class="fa-regular fa-circle-down"></i>
+											</a>`;
+										}
+							fileHtml += `</div>`;
 						}
 					});
 
@@ -113,7 +130,7 @@
 			);
 
 			$('#ace-chat-messages').scrollTop($('#ace-chat-messages')[0].scrollHeight);
-			if (callback) callback();
+			// if (callback) callback();
 		}
 
 		

@@ -794,11 +794,4 @@ public function ace_test_smtp() {
         wp_send_json_error("<span style='color:red;'>SMTP failed! No detailed error returned.</span>");
     }
 }
-
-
-
-
-
-
-
 }

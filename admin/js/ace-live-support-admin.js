@@ -71,25 +71,38 @@
 					res.data.files.forEach(function (file) {
 
 					if (file.type && file.type.startsWith('image/')) {
-						fileHtml = `
+						fileHtml += `
 							<div class="ace-file-preview image">
 								<a href="${file.url}" target="_blank">
 									<img src="${file.url}" width="120" alt="${file.name}"class="ace-file-preview" />
-								</a>
-							</div>
-						`;
+								</a>`;
+						if(msg.sender == 'user'){
+						fileHtml +=`<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+									<i class="fa-regular fa-circle-down"></i>
+									</a>`;
+								}
+						fileHtml +=`</div>`;
 					} else if (file.type === 'application/pdf') {
-						fileHtml = `
+						fileHtml += `
 							<div class="ace-file-preview file application/pdf">
-								<a href="${file.url}" target="_blank">📄 ${file.name}</a>
-							</div>
-						`;
+							<a href="${file.url}" target="_blank">📄 ${file.name}</a>`;
+								if(msg.sender == 'user'){
+								fileHtml +=`<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+										<i class="fa-regular fa-circle-down"></i>
+										</a>`;
+								}
+						fileHtml +=`</div>`;
 					} else {
-						fileHtml = `
+						fileHtml += `
 							<div class="ace-file-preview file application/pdf">
-								<a href="${file.url}" target="_blank">📎 ${file.name}</a>
-							</div>
-						`;
+								<a href="${file.url}" target="_blank">📎 ${file.name}</a>`;
+							if(msg.sender == 'user'){
+								fileHtml +=`
+								<a href="${file.url}" download="${file.name}" class="ace-download-btn">
+								<i class="fa-regular fa-circle-down"></i>
+								</a>`;
+							}
+						fileHtml += `</div>`;
 					}
 					});
 					const msgHtml = `

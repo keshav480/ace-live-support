@@ -64,3 +64,8 @@ img.ace-file-preview {
 .ace-msg-user.file {
     background: none;
 }
+.ace-msg-user.file .ace-file-preview.image {
+    display: flex;
+    align-items: center;
+}
+
