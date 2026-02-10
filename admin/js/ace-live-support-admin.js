@@ -81,15 +81,15 @@
 									<span class="ace-actions-toggle">
 										<i class="fa-solid fa-ellipsis-vertical"></i>
 									</span>
-
-									<div class="ace-actions-dropdown">
-										<a href="${file.url}" 
+									<div class="ace-actions-dropdown">`;
+								if(msg.sender == 'user'){
+								fileHtml +=`	<a href="${file.url}" 
 										download="${file.name}" 
 										class="ace-download-btn">
-											<i class="fa-regular fa-circle-down"></i> Download
-										</a>
-
-										<a href="javascript:void(0)" 
+										<i class="fa-regular fa-circle-down"></i> Download
+									</a>`;
+								}
+								fileHtml +=`<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
 										data-file="${file.name}">
 											<i class="fa-regular fa-trash-can"></i> Delete
@@ -97,7 +97,7 @@
 									</div>
 								</div>
 									`;
-								// }
+								
 						fileHtml +=`</div>`;
 					} else if (file.type === 'application/pdf') {
 						fileHtml += `
@@ -107,52 +107,45 @@
 								fileHtml +=`<div class="ace-file-actions">
 									<span class="ace-actions-toggle">
 										<i class="fa-solid fa-ellipsis-vertical"></i>
-									</span>
-
-									<div class="ace-actions-dropdown">
+									</span>`;
+									if(msg.sender == 'user'){
+									fileHtml +=`<div class="ace-actions-dropdown">
 										<a href="${file.url}" 
 										download="${file.name}" 
 										class="ace-download-btn">
 											<i class="fa-regular fa-circle-down"></i> Download
-										</a>
-
-										<a href="javascript:void(0)" 
+										</a>`
+										}
+									fileHtml +=`<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
 										data-file="${file.name}">
 											<i class="fa-regular fa-trash-can"></i> Delete
 										</a>
 									</div>
-								</div>
-									`;
-								// }
-						fileHtml +=`</div>`;
-					} else {
-						fileHtml += `
-							<div class="ace-file-preview file application/pdf">
-								<a href="${file.url}" target="_blank">📎 ${file.name}</a>`;
-							// if(msg.sender == 'user'){
-								fileHtml +=`
-								<div class="ace-file-actions">
+								</div></div>`;
+									
+							} else {
+							fileHtml += `
+									<div class="ace-file-preview file application/pdf">
+									<a href="${file.url}" target="_blank">📎 ${file.name}</a>`;
+							fileHtml +=`
+									<div class="ace-file-actions">
 									<span class="ace-actions-toggle">
 										<i class="fa-solid fa-ellipsis-vertical"></i>
-									</span>
-
+									</span>`;
+							if(msg.sender == 'user'){
+							fileHtml +=`
 									<div class="ace-actions-dropdown">
-										<a href="${file.url}" 
-										download="${file.name}" 
-										class="ace-download-btn">
-											<i class="fa-regular fa-circle-down"></i> Download
-										</a>
-
-										<a href="javascript:void(0)" 
+									<a href="${file.url}" download="${file.name}"class="ace-download-btn"><i class="fa-regular fa-circle-down"></i> Download</a>`;
+							}
+							fileHtml +=`<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
 										data-file="${file.name}">
-											<i class="fa-regular fa-trash-can"></i> Delete
+										<i class="fa-regular fa-trash-can"></i> Delete
 										</a>
-									</div>
-								</div>`;
-							// }
-						fileHtml += `</div>`;
+										</div>
+										</div>
+									</div>`;
 					}
 					});
 					const msgHtml = `
