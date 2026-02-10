@@ -811,9 +811,9 @@ public function ace_delete_message() {
 
     foreach ($messages as $index => &$msg) {
 
-        if ($msg['type'] !== 'file' || empty($msg['message'])) {
-            continue;
-        }
+        // if ($msg['type'] !== 'file' || empty($msg['message'])) {
+        //     continue;
+        // }
 
         // Convert message string to array
         $files = array_map('trim', explode(',', $msg['message']));
