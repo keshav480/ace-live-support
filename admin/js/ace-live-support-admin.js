@@ -89,14 +89,18 @@
 										<i class="fa-regular fa-circle-down"></i> Download
 									</a>`;
 								}
+								if(msg.sender != 'user'){
 								fileHtml +=`<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
 										data-file="${file.name}">
 											<i class="fa-regular fa-trash-can"></i> Delete
-										</a>
+										</a>`;
+								}
+								fileHtml +=`
 									</div>
 								</div>
 									`;
+									
 								
 						fileHtml +=`</div>`;
 					} else if (file.type === 'application/pdf') {
@@ -116,11 +120,14 @@
 											<i class="fa-regular fa-circle-down"></i> Download
 										</a>`
 										}
+									if(msg.sender != 'user'){
 									fileHtml +=`<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
 										data-file="${file.name}">
 											<i class="fa-regular fa-trash-can"></i> Delete
-										</a>
+										</a>`;
+									}
+									fileHtml +=`
 									</div>
 								</div></div>`;
 									
@@ -160,11 +167,12 @@
 				});
 			}else{						
 				var msgHtml = `<div class="${cls}_outer"><div class="${cls}">${msg.message}<div class="ace-msg-time">${timeText}</div></div>
-								<div class="ace-file-actions">
+								`;
+								if(msg.sender != 'user'){
+								msgHtml +=`	<div class="ace-file-actions">
 									<span class="ace-actions-toggle">
 										<i class="fa-solid fa-ellipsis-vertical"></i>
 									</span>
-
 									<div class="ace-actions-dropdown">
 										<a href="javascript:void(0)" 
 										class="ace-delete-btn" 
@@ -172,7 +180,9 @@
 											<i class="fa-regular fa-trash-can"></i> Delete
 										</a>
 									</div>
-								</div></outer>`;
+								</div>`
+								};
+								msgHtml +=`</div>`;
 				$("#ace-admin-chat").append(dateSeparator+msgHtml);
 				$("#ace-admin-chat").scrollTop($("#ace-admin-chat")[0].scrollHeight);
 				if (callback) callback();
@@ -620,7 +630,7 @@ $(document).on('click', function () {
 $(document).on('click', '.ace-delete-btn', function () {
     if (!confirm('Delete this message ?')) return;
     const fileName = $(this).data('file');
-    const wrapper = $(this).closest('.ace-msg-admin.file .ace-file-preview.image , .ace-msg-user_outer, .ace-msg-admin_outer , .ace-msg-user.file ');
+    const wrapper = $(this).closest('.ace-msg-admin.file , .ace-msg-user_outer, .ace-msg-admin_outer , .ace-msg-user.file ');
     $.post(ace_chat_admin.ajax_url, {
         action: 'ace_delete_message',
         user_id: selectedUser,
