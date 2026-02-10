@@ -97,6 +97,7 @@ class Ace_Live_Support_Public
 		wp_localize_script($this->plugin_name, 'ace_chat_ajax', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'nonce' => wp_create_nonce('ace_chat_nonce'),
+			'nonce_delete_message' => wp_create_nonce('ace_chat_nonce_delete_message'),
 			'nonce_get_chat' => wp_create_nonce('ace_chat_nonce_get_chat'),
 			'public_upload_file'=> wp_create_nonce('public_upload_file'),
 			'pusher_key' => $ace_pusher_key,
@@ -737,6 +738,61 @@ function ace_get_file() {
     wp_send_json_success([
         'files' => $files
     ]);
+}
+
+function ace_delete_message(){
+    check_ajax_referer('ace_chat_nonce_delete_message', 'nonce');	
+	 global $wpdb;
+    $user_id = isset($_POST['user_id'])
+        ? sanitize_text_field(wp_unslash($_POST['user_id']))
+        : '';
+    $file_to_delete = isset($_POST['file'])
+        ? sanitize_file_name(wp_unslash($_POST['file']))
+        : '';
+    if (empty($user_id) || empty($file_to_delete)) {
+        wp_send_json_error(['message' => 'Invalid request']);
+    }
+    $messages_json = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT m.messages
+             FROM {$wpdb->prefix}ace_live_chat AS u
+             LEFT JOIN {$wpdb->prefix}ace_live_chat_messages AS m ON u.id = m.user_id
+             WHERE u.user_id = %s",
+            $user_id
+        )
+    );
+
+    if (empty($messages_json)) {
+        wp_send_json_error(['message' => 'No messages found']);
+    }
+    $messages = json_decode($messages_json, true);
+    foreach ($messages as $index => &$msg) {
+        $files = array_map('trim', explode(',', $msg['message']));
+        if (in_array($file_to_delete, $files, true)) {
+            $files = array_diff($files, [$file_to_delete]);
+            if (empty($files)) {
+                unset($messages[$index]);
+            } else {
+                $msg['message'] = implode(',', $files);
+            }
+            break; 
+        }
+    }
+    $messages = array_values($messages);
+    $wpdb->update(
+        "{$wpdb->prefix}ace_live_chat_messages",
+        ['messages' => wp_json_encode($messages)],
+        ['user_id' => $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT id FROM {$wpdb->prefix}ace_live_chat WHERE user_id = %s",
+                $user_id
+            )
+        )],
+        ['%s'],
+        ['%d']
+    );
+
+    wp_send_json_success(['message' => 'File deleted successfully']);
 }
 
 }

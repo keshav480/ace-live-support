@@ -209,6 +209,8 @@ class Ace_Live_Support
 
 		$this->loader->add_action('wp_ajax_ace_get_file', $plugin_public, 'ace_get_file');
 		$this->loader->add_action('wp_ajax_nopriv_ace_get_file', $plugin_public, 'ace_get_file');
+		$this->loader->add_action('wp_ajax_ace_delete_message_public', $plugin_public, 'ace_delete_message');
+		$this->loader->add_action('wp_ajax_nopriv_ace_delete_message_public', $plugin_public, 'ace_delete_message');
 		
 	}
 

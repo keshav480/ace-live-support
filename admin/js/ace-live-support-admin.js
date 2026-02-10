@@ -76,8 +76,8 @@
 								<a href="${file.url}" target="_blank">
 									<img src="${file.url}" width="120" alt="${file.name}"class="ace-file-preview" />
 								</a>`;
-						// if(msg.sender == 'user'){
-						fileHtml +=`<div class="ace-file-actions">
+							// if(msg.sender == 'user'){
+								fileHtml +=`<div class="ace-file-actions">
 									<span class="ace-actions-toggle">
 										<i class="fa-solid fa-ellipsis-vertical"></i>
 									</span>

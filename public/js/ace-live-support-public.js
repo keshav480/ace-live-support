@@ -77,13 +77,27 @@
 								<div class="ace-file-preview image">
 									<a href="${file.url}" target="_blank">
 										<img src="${file.url}" alt="${file.name}" /></a>`;
+									fileHtml += `<div class="ace-file-actions">
+										<span class="ace-actions-toggle">
+										<i class="fa-solid fa-ellipsis-vertical"></i>
+										</span>
+									<div class="ace-actions-dropdown">`;
 										if(msg.sender != 'user'){
-											fileHtml +=`
-											<a href="${file.url}" download="${file.name}" class="ace-download-btn">
-											<i class="fa-regular fa-circle-down"></i>
-											</a>`;
+									fileHtml +=`	<a href="${file.url}" 
+										download="${file.name}" 
+										class="ace-download-btn">
+										<i class="fa-regular fa-circle-down"></i> Download
+										</a>`;
 										}
-							fileHtml +=`</div>`;
+									if(msg.sender == 'user'){
+										fileHtml +=`<a href="javascript:void(0)" 
+										class="ace-delete-msg-btn" 
+										data-file="${file.name}">
+											<i class="fa-regular fa-trash-can"></i> Delete
+										</a>`;
+									}
+									fileHtml +=`</div></div></div>`;
+									
 						} else if (file.type === 'application/pdf') {
 							fileHtml += `
 								<div class="ace-file-preview file">
@@ -121,19 +135,63 @@
 			}
 
 			/* ---------- TEXT MESSAGE ---------- */
-			$('#ace-chat-messages').append(
-				dateSeparator +
-				`<div class="${cls}">
-					${msg.message}
-					<div class="ace-msg-time">${timeText}</div>
-				</div>`
-			);
-
-			$('#ace-chat-messages').scrollTop($('#ace-chat-messages')[0].scrollHeight);
-			// if (callback) callback();
-		}
-
+		let textMessageHtml = dateSeparator +
+			`<div class="${cls}-outer"><div class="${cls}">
+				${msg.message}
+				<div class="ace-msg-time">${timeText}</div></div>`;
 		
+		if (msg.sender === 'user') {
+			textMessageHtml += `
+				<div class="ace-msg-actions">
+					<span class="ace-actions-toggle">
+						<i class="fa-solid fa-ellipsis-vertical"></i>
+					</span>
+					<div class="ace-actions-dropdown">
+						<a href="javascript:void(0)" class="ace-delete-msg-btn" data-file="${msg.message || ''}">
+							<i class="fa-regular fa-trash-can"></i> Delete
+						</a>
+					</div>
+				</div>`;
+		}
+		
+		textMessageHtml += `</div>`;
+		$('#ace-chat-messages').append(textMessageHtml);
+		$('#ace-chat-messages').scrollTop($('#ace-chat-messages')[0].scrollHeight);
+
+			// if (callback) callback();
+	}
+	$(document).ready(function(){
+		$('#ace-chat-messages').on('click', '.ace-actions-toggle', function (e) {
+			e.stopPropagation();
+			const $dropdown = $(this).siblings('.ace-actions-dropdown');
+			$('.ace-actions-dropdown').not($dropdown).hide();
+			$dropdown.toggle();
+		});
+		$('#ace-chat-messages').on('click', '.ace-delete-msg-btn', function (e) {
+			e.stopPropagation();
+		
+			const fileName = $(this).data('file');
+			if (!fileName) return;
+			if (!confirm('Are you sure you want to delete this message?')) return;
+			$.post(ace_chat_ajax.ajax_url, {
+				action: 'ace_delete_message_public',
+				user_id: ace_chat_ajax.user_id,
+				file: fileName,
+				nonce: ace_chat_ajax.nonce_delete_message
+			}, function (res) {
+				if (res.success) {
+					$(`.ace-delete-msg-btn[data-file="${fileName}"]`).closest('.ace-msg-user-outer , .ace-msg-user.file').remove();
+				} else {
+					// alert('Error deleting message: ' + res.data);
+				}
+				$('.ace-actions-dropdown').hide();
+				});
+			});
+	})
+	$('#ace-chat-messages').on('click', function () {
+		$('.ace-actions-dropdown').hide();
+	});
+
 		// Load previous messages
 		function loadMessages(){
 			$.post(ace_chat_ajax.ajax_url, {action: 'ace_chat_get', nonce: ace_chat_ajax.nonce_get_chat}, function(res){
@@ -183,6 +241,7 @@
 			$('#ace-live-chat').hide();
 			$('.chat_logo').show();
 			$('.chat_close_icon').hide();
+			$('.ace-actions-dropdown').hide();
 		});
 		$('#chatPage').on('click', function (e) {
 			e.stopPropagation();
@@ -407,5 +466,6 @@
 			});
 		});
 	});
+
 
 })( jQuery );

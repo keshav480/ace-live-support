@@ -23,3 +23,60 @@ button#ace-admin-upload-btn {
   display: flex;
   align-items: center;
 }
+.ace-msg-user-outer {
+    display: flex;
+   flex-direction: row-reverse;
+    align-items: center;
+}
+a.ace-delete-msg-btn {
+    /* display: none; */
+}
+.ace-actions-dropdown {
+    display: none;
+}
+.ace-msg-user.file .ace-file-preview.image {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.ace-msg-admin-outer {
+    display: flex;
+}
+.ace-msg-user-outer .ace-actions-dropdown {
+    position: absolute;
+    z-index: 999999;
+    top: 17px;
+    background: #d4c1c1;
+    padding: 5px;
+    right: 8px;
+}
+
+.ace-msg-actions, .ace-file-preview.image {
+    position: relative;
+}
+
+a.ace-delete-msg-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+.ace-msg-admin.file .ace-actions-dropdown , .ace-msg-user.file .ace-actions-dropdown{
+ background: #d4c1c1;
+}
+.ace-msg-admin.file a.ace-delete-btn {
+    position: absolute;
+    z-index: 99999;
+    background: #d4c1c1;
+    margin: 0 5px;
+    padding: 5px;
+}
+.ace-actions-dropdown {
+    position: absolute;
+    z-index: 999999;
+    padding: 8px;
+    margin: 0 6px;
+}
+.ace-msg-user.file .ace-actions-dropdown{
+ right: 41%;
+}
