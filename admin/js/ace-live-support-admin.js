@@ -627,10 +627,8 @@ $(document).on('click', function () {
 // delete the message 
 $(document).on('click', '.ace-delete-btn', function () {
     if (!confirm('Delete this file?')) return;
-
     const fileName = $(this).data('file');
-    const wrapper = $(this).closest('.ace-msg-admin.file , .ace-msg-user_outer, .ace-msg-admin_outer , .ace-msg-user.file');
-
+    const wrapper = $(this).closest('.ace-msg-admin.file .ace-file-preview.image , .ace-msg-user_outer, .ace-msg-admin_outer , .ace-msg-user.file ');
     $.post(ace_chat_admin.ajax_url, {
         action: 'ace_delete_message',
         user_id: selectedUser,
