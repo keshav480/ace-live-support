@@ -777,22 +777,16 @@ function ace_get_file() {
 }
 public function ace_delete_message() {
     check_ajax_referer('ace_chat_nonce', 'nonce');
-
     global $wpdb;
-
     $user_id = isset($_POST['user_id'])
         ? sanitize_text_field(wp_unslash($_POST['user_id']))
         : '';
-
     $file_to_delete = isset($_POST['file'])
         ? sanitize_file_name(wp_unslash($_POST['file']))
         : '';
-
     if (empty($user_id) || empty($file_to_delete)) {
         wp_send_json_error(['message' => 'Invalid request']);
     }
-
-    // Get messages JSON
     $messages_json = $wpdb->get_var(
         $wpdb->prepare(
             "SELECT m.messages
@@ -806,39 +800,20 @@ public function ace_delete_message() {
     if (empty($messages_json)) {
         wp_send_json_error(['message' => 'No messages found']);
     }
-
     $messages = json_decode($messages_json, true);
-
     foreach ($messages as $index => &$msg) {
-
-        // if ($msg['type'] !== 'file' || empty($msg['message'])) {
-        //     continue;
-        // }
-
-        // Convert message string to array
         $files = array_map('trim', explode(',', $msg['message']));
-
-        // If file exists → remove it
         if (in_array($file_to_delete, $files, true)) {
-
             $files = array_diff($files, [$file_to_delete]);
-
             if (empty($files)) {
-                // No files left → remove entire message
                 unset($messages[$index]);
             } else {
-                // Update remaining files
                 $msg['message'] = implode(',', $files);
             }
-
-            break; // stop after first match
+            break; 
         }
     }
-
-    // Re-index array
     $messages = array_values($messages);
-
-    // Update DB
     $wpdb->update(
         "{$wpdb->prefix}ace_live_chat_messages",
         ['messages' => wp_json_encode($messages)],

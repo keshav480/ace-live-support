@@ -358,7 +358,6 @@
 		});
 
 jQuery(document).ready(function ($) {
-
     const fileInput = $("#ace_upload_input");
     const previewImg = $("#ace_support_icon_preview");
     const hiddenInput = $("#ace_support_icon"); 
@@ -626,7 +625,7 @@ $(document).on('click', function () {
 });
 // delete the message 
 $(document).on('click', '.ace-delete-btn', function () {
-    if (!confirm('Delete this file?')) return;
+    if (!confirm('Delete this message ?')) return;
     const fileName = $(this).data('file');
     const wrapper = $(this).closest('.ace-msg-admin.file .ace-file-preview.image , .ace-msg-user_outer, .ace-msg-admin_outer , .ace-msg-user.file ');
     $.post(ace_chat_admin.ajax_url, {
